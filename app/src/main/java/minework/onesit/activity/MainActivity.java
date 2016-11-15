@@ -11,29 +11,29 @@ import android.widget.TextView;
 import minework.onesit.R;
 import minework.onesit.fragment.data.DataFragment;
 import minework.onesit.fragment.find.FindFragment;
-import minework.onesit.fragment.list.ListFragment;
+import minework.onesit.fragment.news.NewsFragment;
 import minework.onesit.fragment.user.UserFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DataFragment dataFragment;
     private FindFragment findFragment;
-    private ListFragment listFragment;
+    private NewsFragment newsFragment;
     private UserFragment userFragment;
 
     private View dataLayout;
     private View findLayout;
-    private View listLayout;
+    private View newsLayout;
     private View userLayout;
 
     private ImageView dataImage;
     private ImageView findImage;
-    private ImageView listImage;
+    private ImageView newsImage;
     private ImageView userImage;
 
     private TextView dataText;
     private TextView findText;
-    private TextView listText;
+    private TextView newsText;
     private TextView userText;
 
     private FragmentManager fragmentManager;
@@ -55,16 +55,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findLayout = findViewById(R.id.find_layout);
         findImage = (ImageView) findViewById(R.id.find_image);
         findText = (TextView) findViewById(R.id.find_text);
-        listLayout = findViewById(R.id.list_layout);
-        listImage = (ImageView) findViewById(R.id.list_image);
-        listText = (TextView) findViewById(R.id.list_text);
+        newsLayout = findViewById(R.id.news_layout);
+        newsImage = (ImageView) findViewById(R.id.news_image);
+        newsText = (TextView) findViewById(R.id.news_text);
         userLayout = findViewById(R.id.user_layout);
         userImage = (ImageView) findViewById(R.id.user_image);
         userText = (TextView) findViewById(R.id.user_text);
 
         dataLayout.setOnClickListener(this);
         findLayout.setOnClickListener(this);
-        listLayout.setOnClickListener(this);
+        newsLayout.setOnClickListener(this);
         userLayout.setOnClickListener(this);
     }
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.find_layout:
                 setTabSelection(1);
                 break;
-            case R.id.list_layout:
+            case R.id.news_layout:
                 setTabSelection(2);
                 break;
             case R.id.user_layout:
@@ -116,14 +116,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
-                listImage.setImageResource(R.mipmap.list_image_g);
-                listText.setTextColor(Color.parseColor("#008f07"));
-                listLayout.setBackgroundResource(R.drawable.tab_image_change);
-                if (listFragment == null) {
-                    listFragment = new ListFragment();
-                    transaction.add(R.id.content, listFragment);
+                newsImage.setImageResource(R.mipmap.news_image_g);
+                newsText.setTextColor(Color.parseColor("#008f07"));
+                newsLayout.setBackgroundResource(R.drawable.tab_image_change);
+                if (newsFragment == null) {
+                    newsFragment = new NewsFragment();
+                    transaction.add(R.id.content, newsFragment);
                 } else {
-                    transaction.show(listFragment);
+                    transaction.show(newsFragment);
                 }
                 break;
             case 3:
@@ -149,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findImage.setImageResource(R.mipmap.find_image_w);
         findText.setTextColor(Color.WHITE);
         findLayout.setBackgroundResource(R.drawable.tab_image);
-        listImage.setImageResource(R.mipmap.list_image_w);
-        listText.setTextColor(Color.WHITE);
-        listLayout.setBackgroundResource(R.drawable.tab_image);
+        newsImage.setImageResource(R.mipmap.news_image_w);
+        newsText.setTextColor(Color.WHITE);
+        newsLayout.setBackgroundResource(R.drawable.tab_image);
         userImage.setImageResource(R.mipmap.user_image_w);
         userText.setTextColor(Color.WHITE);
         userLayout.setBackgroundResource(R.drawable.tab_image);
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (findFragment != null) {
             transaction.hide(findFragment);
         }
-        if (listFragment != null) {
-            transaction.hide(listFragment);
+        if (newsFragment != null) {
+            transaction.hide(newsFragment);
         }
         if (userFragment != null) {
             transaction.hide(userFragment);

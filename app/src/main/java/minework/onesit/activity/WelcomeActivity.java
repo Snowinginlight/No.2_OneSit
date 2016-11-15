@@ -54,7 +54,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 } else {
                     loginOK = false;
                 }
-                MyUtil.sleep(1000);
+                MyUtil.sleep(5000);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

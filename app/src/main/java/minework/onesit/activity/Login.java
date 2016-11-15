@@ -64,7 +64,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void chickSignIn() {
-        MLQuery<User> query = MLQuery.getQuery("User");
+        MLQuery<User> query = MLQuery.getQuery("OneSit_User");
         query.whereEqualTo("user_id", loginUserId.getText().toString());
         query.whereEqualTo("user_password", loginUserPassword.getText().toString());
         MLQueryManager.findAllInBackground(query, new FindCallback<User>() {
