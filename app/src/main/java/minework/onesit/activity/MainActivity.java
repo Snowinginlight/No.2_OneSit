@@ -3,38 +3,28 @@ package minework.onesit.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 import minework.onesit.R;
-import minework.onesit.fragment.data.DataFragment;
+import minework.onesit.fragment.plan.PlanFragment;
 import minework.onesit.fragment.find.FindFragment;
 import minework.onesit.fragment.news.NewsFragment;
-import minework.onesit.fragment.user.UserFragment;
+import minework.onesit.fragment.mine.MineFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DataFragment dataFragment;
+    private PlanFragment planFragment;
     private FindFragment findFragment;
     private NewsFragment newsFragment;
-    private UserFragment userFragment;
+    private MineFragment mineFragment;
 
-    private View dataLayout;
+    private View planLayout;
     private View findLayout;
     private View newsLayout;
-    private View userLayout;
-
-    private ImageView dataImage;
-    private ImageView findImage;
-    private ImageView newsImage;
-    private ImageView userImage;
-
-    private TextView dataText;
-    private TextView findText;
-    private TextView newsText;
-    private TextView userText;
+    private View mineLayout;
 
     private FragmentManager fragmentManager;
 
@@ -42,36 +32,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        //隐藏状态栏、导航栏
+        View decorView = getWindow().getDecorView();
+        int option = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(option);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+        //初始化
         init();
         fragmentManager = getFragmentManager();
         setTabSelection(0);
     }
 
     private void init() {
-
-        dataLayout = findViewById(R.id.data_layout);
-        dataImage = (ImageView) findViewById(R.id.data_image);
-        dataText = (TextView) findViewById(R.id.data_text);
+        planLayout = findViewById(R.id.plan_layout);
         findLayout = findViewById(R.id.find_layout);
-        findImage = (ImageView) findViewById(R.id.find_image);
-        findText = (TextView) findViewById(R.id.find_text);
         newsLayout = findViewById(R.id.news_layout);
-        newsImage = (ImageView) findViewById(R.id.news_image);
-        newsText = (TextView) findViewById(R.id.news_text);
-        userLayout = findViewById(R.id.user_layout);
-        userImage = (ImageView) findViewById(R.id.user_image);
-        userText = (TextView) findViewById(R.id.user_text);
+        mineLayout = findViewById(R.id.mine_layout);
 
-        dataLayout.setOnClickListener(this);
+        planLayout.setOnClickListener(this);
         findLayout.setOnClickListener(this);
         newsLayout.setOnClickListener(this);
-        userLayout.setOnClickListener(this);
+        mineLayout.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.data_layout:
+            case R.id.plan_layout:
                 setTabSelection(0);
                 break;
             case R.id.find_layout:
@@ -80,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.news_layout:
                 setTabSelection(2);
                 break;
-            case R.id.user_layout:
+            case R.id.mine_layout:
                 setTabSelection(3);
                 break;
             default:
@@ -94,20 +83,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hideFragment(transaction);
         switch (index) {
             case 0:
-                dataImage.setImageResource(R.mipmap.data_image_g);
-                dataText.setTextColor(Color.parseColor("#008f07"));
-                dataLayout.setBackgroundResource(R.drawable.tab_image_change);
-                if (dataFragment == null) {
-                    dataFragment = new DataFragment();
-                    transaction.add(R.id.content, dataFragment);
+                planLayout.setBackgroundResource(R.mipmap.plan_g);
+                if (planFragment == null) {
+                    planFragment = new PlanFragment();
+                    transaction.add(R.id.content, planFragment);
                 } else {
-                    transaction.show(dataFragment);
+                    transaction.show(planFragment);
                 }
                 break;
             case 1:
-                findImage.setImageResource(R.mipmap.find_image_g);
-                findText.setTextColor(Color.parseColor("#008f07"));
-                findLayout.setBackgroundResource(R.drawable.tab_image_change);
+                findLayout.setBackgroundResource(R.mipmap.find_g);
                 if (findFragment == null) {
                     findFragment = new FindFragment();
                     transaction.add(R.id.content, findFragment);
@@ -116,9 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
-                newsImage.setImageResource(R.mipmap.news_image_g);
-                newsText.setTextColor(Color.parseColor("#008f07"));
-                newsLayout.setBackgroundResource(R.drawable.tab_image_change);
+                newsLayout.setBackgroundResource(R.mipmap.news_g);
                 if (newsFragment == null) {
                     newsFragment = new NewsFragment();
                     transaction.add(R.id.content, newsFragment);
@@ -127,14 +110,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3:
-                userImage.setImageResource(R.mipmap.user_image_g);
-                userText.setTextColor(Color.parseColor("#008f07"));
-                userLayout.setBackgroundResource(R.drawable.tab_image_change);
-                if (userFragment == null) {
-                    userFragment = new UserFragment();
-                    transaction.add(R.id.content, userFragment);
+                mineLayout.setBackgroundResource(R.mipmap.mine_g);
+                if (mineFragment == null) {
+                    mineFragment = new MineFragment();
+                    transaction.add(R.id.content, mineFragment);
                 } else {
-                    transaction.show(userFragment);
+                    transaction.show(mineFragment);
                 }
                 break;
             default:
@@ -143,24 +124,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void clearSelection() {
-        dataImage.setImageResource(R.mipmap.data_image_w);
-        dataText.setTextColor(Color.WHITE);
-        dataLayout.setBackgroundResource(R.drawable.tab_image);
-        findImage.setImageResource(R.mipmap.find_image_w);
-        findText.setTextColor(Color.WHITE);
-        findLayout.setBackgroundResource(R.drawable.tab_image);
-        newsImage.setImageResource(R.mipmap.news_image_w);
-        newsText.setTextColor(Color.WHITE);
-        newsLayout.setBackgroundResource(R.drawable.tab_image);
-        userImage.setImageResource(R.mipmap.user_image_w);
-        userText.setTextColor(Color.WHITE);
-        userLayout.setBackgroundResource(R.drawable.tab_image);
+
+        planLayout.setBackgroundResource(R.mipmap.plan_w);
+        findLayout.setBackgroundResource(R.mipmap.find_w);
+        newsLayout.setBackgroundResource(R.mipmap.news_w);
+        mineLayout.setBackgroundResource(R.mipmap.mine_w);
 
     }
 
     private void hideFragment(FragmentTransaction transaction) {
-        if (dataFragment != null) {
-            transaction.hide(dataFragment);
+        if (planFragment != null) {
+            transaction.hide(planFragment);
         }
         if (findFragment != null) {
             transaction.hide(findFragment);
@@ -168,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (newsFragment != null) {
             transaction.hide(newsFragment);
         }
-        if (userFragment != null) {
-            transaction.hide(userFragment);
+        if (mineFragment != null) {
+            transaction.hide(mineFragment);
         }
     }
 

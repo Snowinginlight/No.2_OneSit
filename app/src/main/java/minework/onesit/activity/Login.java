@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.maxleap.FindCallback;
 import com.maxleap.MLQuery;
 import com.maxleap.MLQueryManager;
 import com.maxleap.exception.MLException;
+import com.maxleap.sdk.B;
 
 import java.util.List;
 
@@ -28,36 +30,43 @@ import minework.onesit.module.User;
 public class Login extends AppCompatActivity implements View.OnClickListener {
     private static boolean flag;
 
-    private Button loginSignIn;
-    private Button loginSignUp;
-    private EditText loginUserId;
-    private EditText loginUserPassword;
+    private EditText idLogin;
+    private EditText passwordLogin;
+    private Button signUpLogin;
+    private Button logInLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        //隐藏状态栏、导航栏
+        View decorView = getWindow().getDecorView();
+        int option = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(option);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+        //初始化
         init();
     }
 
     private void init() {
-        loginSignIn = (Button) findViewById(R.id.login_page_sign_in);
-        loginSignUp = (Button) findViewById(R.id.login_page_sign_up);
-        loginUserId = (EditText) findViewById(R.id.login_user_id_edit);
-        loginUserPassword = (EditText) findViewById(R.id.login_user_password_edit);
+        idLogin = (EditText)findViewById(R.id.id_login);
+        passwordLogin = (EditText)findViewById(R.id.password_login);
+        signUpLogin = (Button)findViewById(R.id.sign_up_login);
+        logInLogin = (Button)findViewById(R.id.log_in_login);
 
-        loginSignIn.setOnClickListener(this);
-        loginSignUp.setOnClickListener(this);
-
+        signUpLogin.setOnClickListener(this);
+        logInLogin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.login_page_sign_in:
+            case R.id.log_in_login:
                 chickSignIn();
                 break;
-            case R.id.login_page_sign_up:
+            case R.id.sign_up_login:
                 startActivity(new Intent(this, SignUp.class));
                 break;
         }
@@ -65,8 +74,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void chickSignIn() {
         MLQuery<User> query = MLQuery.getQuery("OneSit_User");
-        query.whereEqualTo("user_id", loginUserId.getText().toString());
-        query.whereEqualTo("user_password", loginUserPassword.getText().toString());
+        query.whereEqualTo("user_id", idLogin.getText().toString());
+        query.whereEqualTo("user_password", passwordLogin.getText().toString());
         MLQueryManager.findAllInBackground(query, new FindCallback<User>() {
             public void done(List<User> scoreList, MLException e) {
                 if (e == null) {
@@ -74,8 +83,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     SharedPreferences localUser = getSharedPreferences("local_user",
                             Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = localUser.edit();
-                    editor.putString("user_id",loginUserId.getText().toString());
-                    editor.putString("user_password", loginUserPassword.getText().toString());
+                    editor.putString("user_id",idLogin.getText().toString());
+                    editor.putString("user_password", passwordLogin.getText().toString());
                     editor.commit();
                     Login.this.finish();
                     startActivity(new Intent(Login.this, MainActivity.class));

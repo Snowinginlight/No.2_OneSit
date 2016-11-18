@@ -1,4 +1,4 @@
-package minework.onesit.fragment.data;
+package minework.onesit.fragment.mine;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import minework.onesit.R;
  * Created by 无知 on 2016/11/12.
  */
 
-public class DataFragment extends Fragment {
+public class MineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View dataLayout = inflater.inflate(R.layout.data_layout, container, false);
-        return dataLayout;
+        View mineLayout = inflater.inflate(R.layout.mine_layout,container,false);
+        return mineLayout;
     }
 }

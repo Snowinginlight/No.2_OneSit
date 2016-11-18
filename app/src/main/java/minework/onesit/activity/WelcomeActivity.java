@@ -4,19 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import com.maxleap.GetCallback;
-import com.maxleap.MLDataManager;
 import com.maxleap.MLObject;
 import com.maxleap.MaxLeap;
-import com.maxleap.exception.MLException;
-
 import minework.onesit.R;
 import minework.onesit.module.User;
 import minework.onesit.util.MyUtil;
