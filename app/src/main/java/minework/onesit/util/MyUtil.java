@@ -12,4 +12,8 @@ public class MyUtil {
             e.printStackTrace();
         }
     }
+
+    public static final void queryUser(){
+
+    }
 }

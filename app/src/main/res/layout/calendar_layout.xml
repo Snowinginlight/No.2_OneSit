@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar_layout"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/calendar_broad"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp">
+
+    <LinearLayout
+        android:id="@+id/month"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/last_month_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:text="@string/last_month"
+            android:textColor="@color/colorTheme"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/month_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5sp"
+            android:background="#00000000"
+            android:textColor="@color/colorTheme"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/next_month_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:text="@string/next_month"
+            android:textColor="@color/colorTheme"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/week"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sun"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Mon"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Tue"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Wes"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Thu"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Fri"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sat"
+            android:textColor="@color/colorTheme"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/calendar_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="7"
+        android:stretchMode="columnWidth"
+        android:descendantFocusability="afterDescendants">
+
+    </GridView>
+</LinearLayout>

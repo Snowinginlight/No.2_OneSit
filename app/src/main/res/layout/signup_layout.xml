@@ -17,7 +17,7 @@
             android:minLines="1"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="13dp"
-            android:hint="ID"
+            android:hint="用户名"
             android:textSize="20sp"/>
         <EditText
             android:id="@+id/password_signup"
@@ -25,23 +25,25 @@
             android:minLines="1"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="20dp"
-            android:hint="Password"
-            android:textSize="20sp"/>
+            android:hint="输入密码"
+            android:textSize="20sp"
+            android:inputType="textPassword"/>
         <EditText
             android:id="@+id/confirm_signup"
             android:maxLines="1"
             android:minLines="1"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="20dp"
-            android:hint="Confirm Password"
-            android:textSize="20sp"/>
+            android:hint="确认密码"
+            android:textSize="20sp"
+            android:inputType="textPassword"/>
         <EditText
             android:id="@+id/email_signup"
             android:maxLines="1"
             android:minLines="1"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="15dp"
-            android:hint="Email"
+            android:hint="电子邮箱"
             android:textSize="20sp"/>
     </TableLayout>
     <Button

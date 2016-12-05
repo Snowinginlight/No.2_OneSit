@@ -2,74 +2,72 @@ package minework.onesit.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import minework.onesit.R;
-import minework.onesit.fragment.plan.PlanFragment;
 import minework.onesit.fragment.find.FindFragment;
-import minework.onesit.fragment.news.NewsFragment;
 import minework.onesit.fragment.mine.MineFragment;
+import minework.onesit.fragment.news.NewsFragment;
+import minework.onesit.fragment.plan.PlanFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+/**
+ * Created by 无知 on 2016/11/22.
+ */
 
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+
+    private long exitTime = 0;
+    //四大板块
+    private FragmentManager fragmentManager;
     private PlanFragment planFragment;
     private FindFragment findFragment;
     private NewsFragment newsFragment;
     private MineFragment mineFragment;
-
+    // 四大板块按钮
     private View planLayout;
     private View findLayout;
     private View newsLayout;
     private View mineLayout;
 
-    private FragmentManager fragmentManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        //隐藏状态栏、导航栏
-        View decorView = getWindow().getDecorView();
-        int option = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(option);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-        //初始化
         init();
-        fragmentManager = getFragmentManager();
-        setTabSelection(0);
     }
 
-    private void init() {
-        planLayout = findViewById(R.id.plan_layout);
-        findLayout = findViewById(R.id.find_layout);
-        newsLayout = findViewById(R.id.news_layout);
-        mineLayout = findViewById(R.id.mine_layout);
+    @Override
+    protected void init() {
+        planLayout = findViewById(R.id.plan_button);
+        findLayout = findViewById(R.id.find_button);
+        newsLayout = findViewById(R.id.news_button);
+        mineLayout = findViewById(R.id.mine_button);
 
         planLayout.setOnClickListener(this);
         findLayout.setOnClickListener(this);
         newsLayout.setOnClickListener(this);
         mineLayout.setOnClickListener(this);
+
+        fragmentManager = getFragmentManager();
+        setTabSelection(0);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.plan_layout:
+            case R.id.plan_button:
                 setTabSelection(0);
                 break;
-            case R.id.find_layout:
+            case R.id.find_button:
                 setTabSelection(1);
                 break;
-            case R.id.news_layout:
+            case R.id.news_button:
                 setTabSelection(2);
                 break;
-            case R.id.mine_layout:
+            case R.id.mine_button:
                 setTabSelection(3);
                 break;
             default:
@@ -83,43 +81,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hideFragment(transaction);
         switch (index) {
             case 0:
-                planLayout.setBackgroundResource(R.mipmap.plan_g);
-                if (planFragment == null) {
-                    planFragment = new PlanFragment();
-                    transaction.add(R.id.content, planFragment);
-                } else {
-                    transaction.show(planFragment);
-                }
+                planLayoutTab(transaction);
                 break;
             case 1:
-                findLayout.setBackgroundResource(R.mipmap.find_g);
-                if (findFragment == null) {
-                    findFragment = new FindFragment();
-                    transaction.add(R.id.content, findFragment);
-                } else {
-                    transaction.show(findFragment);
-                }
+                findLayoutTab(transaction);
                 break;
             case 2:
-                newsLayout.setBackgroundResource(R.mipmap.news_g);
-                if (newsFragment == null) {
-                    newsFragment = new NewsFragment();
-                    transaction.add(R.id.content, newsFragment);
-                } else {
-                    transaction.show(newsFragment);
-                }
+                newsLayoutTab(transaction);
                 break;
             case 3:
-                mineLayout.setBackgroundResource(R.mipmap.mine_g);
-                if (mineFragment == null) {
-                    mineFragment = new MineFragment();
-                    transaction.add(R.id.content, mineFragment);
-                } else {
-                    transaction.show(mineFragment);
-                }
+                mineLayoutTab(transaction);
                 break;
             default:
                 return;
+        }
+        transaction.commit();
+    }
+
+    private void planLayoutTab(FragmentTransaction transaction) {
+        planLayout.setBackgroundResource(R.mipmap.plan_g);
+        if (planFragment == null) {
+            planFragment = new PlanFragment();
+            transaction.add(R.id.fragment_content, planFragment);
+        } else {
+            transaction.show(planFragment);
+        }
+    }
+
+    private void findLayoutTab(FragmentTransaction transaction) {
+        findLayout.setBackgroundResource(R.mipmap.find_g);
+        if (findFragment == null) {
+            findFragment = new FindFragment();
+            transaction.add(R.id.fragment_content, findFragment);
+        } else {
+            transaction.show(findFragment);
+        }
+    }
+
+    private void newsLayoutTab(FragmentTransaction transaction) {
+        newsLayout.setBackgroundResource(R.mipmap.news_g);
+        if (newsFragment == null) {
+            newsFragment = new NewsFragment();
+            transaction.add(R.id.fragment_content, newsFragment);
+        } else {
+            transaction.show(newsFragment);
+        }
+    }
+
+    private void mineLayoutTab(FragmentTransaction transaction) {
+        mineLayout.setBackgroundResource(R.mipmap.mine_g);
+        if (mineFragment == null) {
+            mineFragment = new MineFragment();
+            transaction.add(R.id.fragment_content, mineFragment);
+        } else {
+            transaction.show(mineFragment);
         }
     }
 
@@ -147,4 +162,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

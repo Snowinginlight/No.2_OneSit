@@ -2,50 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/top_bar"/>
+
     <FrameLayout
-        android:id="@+id/content"
+        android:id="@+id/fragment_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@mipmap/main_background">
+        android:layout_weight="1">
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/buttom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:background="@mipmap/buttom_bar"
-        android:orientation="horizontal">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <RelativeLayout
-            android:id="@+id/plan_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@mipmap/plan_w" />
+            android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/plan_button"
+                android:layout_width="40dp"
+                android:layout_height="61dp"
+                android:background="@mipmap/plan_w" />
+        </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/find_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@mipmap/find_w" />
+            android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/find_button"
+                android:layout_width="40dp"
+                android:layout_height="58dp"
+                android:background="@mipmap/find_w" />
+        </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/news_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@mipmap/news_w" />
+            android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/news_button"
+                android:layout_width="50dp"
+                android:layout_height="58dp"
+                android:background="@mipmap/news_w" />
+        </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/mine_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@mipmap/mine_w" />
+            android:gravity="center">
+            <RelativeLayout
+                android:id="@+id/mine_button"
+                android:layout_width="32dp"
+                android:layout_height="58dp"
+                android:background="@mipmap/mine_w" />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
