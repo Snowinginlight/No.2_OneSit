@@ -77,6 +77,7 @@
                     android:textSize="35sp" />
 
                 <EditText
+                    android:id="@+id/publish_title_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -182,6 +183,7 @@
                     android:textSize="35dp" />
 
                 <EditText
+                    android:id="@+id/publish_people_number_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -191,6 +193,7 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="10dp"
+                    android:inputType="number"
                     android:textColor="@color/colorText"
                     android:textSize="22sp" />
 
@@ -218,6 +221,7 @@
                     android:textSize="35sp" />
 
                 <EditText
+                    android:id="@+id/publish_place_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -287,7 +291,7 @@
                         android:id="@+id/publish_seat_table"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center_vertical"
                         android:padding="3dp" />
                 </HorizontalScrollView>
             </RelativeLayout>
@@ -319,7 +323,7 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="140dp"
-                    android:background="@drawable/simple_button_choosed" />
+                    android:background="@drawable/simple_button_normal" />
             </LinearLayout>
 
             <LinearLayout
@@ -338,8 +342,10 @@
                     android:gravity="start"
                     android:minHeight="150dp"
                     android:minLines="8"
+                    android:hint="可用图文描述信息"
                     android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </LinearLayout>

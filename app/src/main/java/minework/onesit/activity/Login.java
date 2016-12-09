@@ -2,6 +2,8 @@ package minework.onesit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +18,28 @@ import minework.onesit.util.MyRomateSQLUtil;
  */
 
 public class Login extends BaseActivity implements View.OnClickListener {
-    private static boolean flag;
     private long exitTime = 0;
-
     private EditText idLogin;
     private EditText passwordLogin;
     private Button signUpLogin;
     private Button logInLogin;
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what){
+                case 0:
+                    if ((boolean)message.obj) {
+                        Login.this.finish();
+                        startActivity(new Intent(Login.this, MainActivity.class));
+                    }
+                    break;
+                default:
+                    return true;
+            }
+            return true;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +63,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.log_in_login:
-                if (MyRomateSQLUtil.clickLogin(idLogin.getText().toString(), passwordLogin.getText().toString())) {
-                    Login.this.finish();
-                    startActivity(new Intent(Login.this, MainActivity.class));
-                }
+                MyRomateSQLUtil.clickLogin(idLogin.getText().toString(), passwordLogin.getText().toString(),mHandler);
                 break;
             case R.id.sign_up_login:
                 startActivity(new Intent(this, SignUp.class));

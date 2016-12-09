@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.List;
+
 import minework.onesit.activity.MyApplication;
 
 
@@ -26,4 +28,11 @@ public class MyLocalSQLUtil {
             return false;
         }
     }
+    public static String getLocalUserId() {
+        SharedPreferences localUser = mContext.getSharedPreferences("local_user",
+                Activity.MODE_PRIVATE);
+        String id = localUser.getString("user_id", "");
+        return id;
+    }
+
 }

@@ -11,17 +11,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
-import android.view.Gravity;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import minework.onesit.R;
 import minework.onesit.fragment.plan.DividerItemDecoration;
 import minework.onesit.fragment.plan.SeatTableAdapter;
 import minework.onesit.util.MyRichEditUtil;
+import minework.onesit.util.MyRomateSQLUtil;
 import minework.onesit.util.camera.CameraCore;
 import minework.onesit.util.camera.CameraProxy;
 
@@ -47,44 +49,48 @@ import minework.onesit.util.camera.CameraProxy;
 public class Publish extends BaseActivity implements View.OnClickListener, CameraCore.CameraResult {
 
     private static final float SCALE = MyApplication.getInstance().getResources().getDisplayMetrics().density;
-    private static boolean isCounterClock = false;
     private static boolean isSeatTable = false;
-    private static boolean isInformationText = true;
+    private static boolean isInformationText = false;
     private static boolean isSetSeatTable = false;
-    private static boolean isFinishgRect = false;
+    private static boolean isFinishRich = false;
     private static boolean isItemDecoration = false;
     private static int start = -1;
     private static int end = -1;
     private static int size;
     private static int marginLength = 0;
     private static Rect r;
-    //座位图
-    private static RecyclerView publishSeatTable;
-    private static TextView publishSeatTableToast;
-    private static HorizontalScrollView publishSeatScroll;
-    private static SeatTableAdapter seatTableAdapter;
-    private static DividerItemDecoration itemDecoration;
-    //详情
-    private static boolean hasBold = false;
-    private static boolean hasItalic = false;
-    private static boolean hasUnderline = false;
-    private static boolean hasTypeface = false;
-    private static boolean hasSuperscript = false;
-    private static boolean hasSubscript = false;
-    private static boolean hasStrikethrough = false;
-    private static boolean hasQuote = false;
     private final String externalStorageDirectory = Environment.getExternalStorageDirectory().getPath() + "/picture/";
+    private int column=0;
+    //主体
+    private Context mContext;
+    private Button publishBackButton;
+    private Button publishSeatButton;
+    private Button publishInformationButton;
+    private EditText publishTitleEdit;
+    private TextView publishStartTimeText;
+    private TextView publishStopTimeText;
+    private EditText publishPeopleNumberEdit;
+    private EditText publishPlaceEdit;
+    private RelativeLayout publishSeatTableArea;
+    //座位图
+    private RecyclerView publishSeatTable;
+    private TextView publishSeatTableToast;
+    private HorizontalScrollView publishSeatScroll;
+    private SeatTableAdapter seatTableAdapter;
+    private DividerItemDecoration itemDecoration;
     private CameraProxy cameraProxy;
     private Bitmap bitmap;
     private View publishRootView;
-    private Context mContext;
-    private Button publishBackButton;
+
+    //菜单
     private Button publishManagerButton;
-    private Button publishSeatButton;
-    private Button publishInformationButton;
-    private TextView publishStartTimeText;
-    private TextView publishStopTimeText;
-    private RelativeLayout publishSeatTableArea;
+    private PopupWindow managerWindow;
+    private View managerView;
+    private Button publishEditSeat;
+    private Button publishSaveModel;
+    private Button publishImprtModel;
+    private Button publishFinish;
+    //详情
     private EditText publishInformationEdit;
     private PopupWindow RichEditorWindow;
     private View RichEditorView;
@@ -113,10 +119,6 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.publish_layout);
-        File tempFile = new File(externalStorageDirectory);
-        if (!tempFile.exists()) {
-            tempFile.mkdirs();
-        }
         cameraProxy = new CameraProxy(this, Publish.this);
         publishRootView = findViewById(R.id.publish_root_view);
         r = new Rect();
@@ -131,12 +133,15 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
         publishManagerButton = (Button) findViewById(R.id.publish_manager_button);
         publishSeatButton = (Button) findViewById(R.id.publish_seat_button);
         publishInformationButton = (Button) findViewById(R.id.publish_information_button);
+        publishTitleEdit = (EditText)findViewById(R.id.publish_title_edit);
         publishStartTimeText = (TextView) findViewById(R.id.publish_start_time_text);
         publishStopTimeText = (TextView) findViewById(R.id.publish_stop_time_text);
+        publishPeopleNumberEdit = (EditText)findViewById(R.id.publish_people_number_edit);
+        publishPlaceEdit = (EditText)findViewById(R.id.publish_place_edit);
         publishSeatTableArea = (RelativeLayout) findViewById(R.id.publish_seat_table_area);
         publishSeatTableToast = (TextView) findViewById(R.id.publish_seat_table_toast);
         publishSeatTable = (RecyclerView) findViewById(R.id.publish_seat_table);
-        publishSeatScroll = (HorizontalScrollView)findViewById(R.id.publish_seat_scroll);
+        publishSeatScroll = (HorizontalScrollView) findViewById(R.id.publish_seat_scroll);
         //富文本
         publishInformationEdit = (EditText) findViewById(R.id.publish_information_edit);
         size = (int) publishInformationEdit.getTextSize();
@@ -145,8 +150,11 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
         publishManagerButton.setOnClickListener(this);
         publishSeatButton.setOnClickListener(this);
         publishInformationButton.setOnClickListener(this);
+        publishTitleEdit.setOnClickListener(this);
         publishStartTimeText.setOnClickListener(this);
         publishStopTimeText.setOnClickListener(this);
+        publishPeopleNumberEdit.setOnClickListener(this);
+        publishPlaceEdit.setOnClickListener(this);
         publishSeatTableToast.setOnClickListener(this);
 
         publishRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -156,8 +164,8 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                 int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
                 //阀值设置为屏幕高度的1/3
                 int keyHeight = screenHeight / 3;
-                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight) && isFinishgRect && RichEditorWindow != null) {
-                    RichEditorWindow.showAsDropDown(findViewById(R.id.plan_top_title),0,200);
+                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight) && isFinishRich && RichEditorWindow != null) {
+                    RichEditorWindow.showAsDropDown(findViewById(R.id.plan_top_title), 0, 200);
                 } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
                     if (RichEditorWindow != null && RichEditorWindow.isShowing())
                         RichEditorWindow.dismiss();
@@ -179,12 +187,12 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                 if (hasFocus) {
                     if (RichEditorWindow == null)
                         initRichEditorWindow();
-                    isFinishgRect = true;
-                    RichEditorWindow.showAsDropDown(findViewById(R.id.plan_top_title),0,(int)(r.height()/(SCALE-0.5f)));
+                    isFinishRich = true;
+                    RichEditorWindow.showAsDropDown(findViewById(R.id.plan_top_title), 0, (int) (r.height() / (SCALE - 0.5f)));
                 } else {
                     if (RichEditorWindow != null && RichEditorWindow.isShowing())
                         RichEditorWindow.dismiss();
-                    isFinishgRect = false;
+                    isFinishRich = false;
                 }
             }
         });
@@ -197,12 +205,58 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                 onBackPressed();
                 break;
             case R.id.publish_manager_button:
-                if (isCounterClock) {
+                if (managerWindow != null && managerWindow.isShowing()) {
+                    managerWindow.dismiss();
                     publishManagerButton.startAnimation(clockAnimation);
-                    isCounterClock = false;
+                    return;
                 } else {
+                    if (managerWindow == null) {
+                        initSeatMenuWindow();
+                    }
+                    managerWindow.showAsDropDown(publishManagerButton, 0, 20);
                     publishManagerButton.startAnimation(counter_clockAnimation);
-                    isCounterClock = true;
+                }
+                break;
+            case R.id.publish_edit_seat:
+                startActivity(new Intent(mContext, SeatTable.class));
+                if (managerWindow != null && managerWindow.isShowing()) {
+                    managerWindow.dismiss();
+                }
+                break;
+            case R.id.publish_save_model:
+                if (!TextUtils.isEmpty(publishTitleEdit.getText()) && !TextUtils.isEmpty(publishStartTimeText.getText())
+                        &&!TextUtils.isEmpty(publishStopTimeText.getText())&&!TextUtils.isEmpty(publishPlaceEdit.getText())
+                        &&!TextUtils.isEmpty(publishPeopleNumberEdit.getText())) {
+                    AlertDialog.Builder saveView = new AlertDialog.Builder(this);
+                    saveView.setMessage("确定上传到云端？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            MyRomateSQLUtil.savePublish(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),publishInformationEdit.getText());
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onBackPressed();
+                        }
+                    });
+                    AlertDialog saveDialog = saveView.create();
+                    saveDialog.show();
+                } else {
+                    Toast.makeText(mContext,"标题、时间、地点、人数均不能为空",Toast.LENGTH_SHORT).show();
+                }
+                if (managerWindow != null && managerWindow.isShowing()) {
+                    managerWindow.dismiss();
+                }
+                break;
+            case R.id.publish_import_model:
+                startActivity(new Intent(this, PublishModelList.class));
+                if (managerWindow != null && managerWindow.isShowing()) {
+                    managerWindow.dismiss();
+                }
+                break;
+            case R.id.publish_finish:
+                if (managerWindow != null && managerWindow.isShowing()) {
+                    managerWindow.dismiss();
                 }
                 break;
             case R.id.publish_seat_button:
@@ -272,9 +326,11 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
             case R.id.publish_information_button:
                 if (isInformationText) {
                     publishInformationButton.setBackgroundResource(R.drawable.simple_button_normal);
+                    publishInformationEdit.setVisibility(View.GONE);
                     isInformationText = false;
                 } else {
                     publishInformationButton.setBackgroundResource(R.drawable.simple_button_choosed);
+                    publishInformationEdit.setVisibility(View.VISIBLE);
                     isInformationText = true;
                 }
                 break;
@@ -492,6 +548,21 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
         }
     }
 
+    private void initSeatMenuWindow() {
+        managerView = getLayoutInflater().inflate(R.layout.publish_manager_layout, null, false);
+        managerWindow = new PopupWindow(managerView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        managerWindow.setAnimationStyle(R.style.AnimationFade);
+        managerWindow.setOutsideTouchable(true);
+        publishEditSeat = (Button) managerView.findViewById(R.id.publish_edit_seat);
+        publishSaveModel = (Button) managerView.findViewById(R.id.publish_save_model);
+        publishImprtModel = (Button) managerView.findViewById(R.id.publish_import_model);
+        publishFinish = (Button) managerView.findViewById(R.id.publish_finish);
+        publishEditSeat.setOnClickListener(this);
+        publishSaveModel.setOnClickListener(this);
+        publishImprtModel.setOnClickListener(this);
+        publishFinish.setOnClickListener(this);
+    }
+
     private void initRichEditorWindow() {
         RichEditorView = getLayoutInflater().inflate(R.layout.rich_editor_layout, null, false);
         RichEditorWindow = new PopupWindow(RichEditorView, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -551,8 +622,6 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                     });
                     file.delete();
                 }
-
-                ;
             }.start();
         }
     }
@@ -572,14 +641,13 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Test", "is create");
-        Log.d("Test", "" + getIntent().getBooleanExtra("hasSeatTable", false));
         if (getIntent().getBooleanExtra("hasSeatTable", false)) {
             Publish.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    column = getIntent().getIntExtra("column", 1);
                     seatTableAdapter = SeatTable.getRecyclerViewAdapter();
-                    publishSeatTable.setLayoutManager(new GridLayoutManager(Publish.this, getIntent().getIntExtra("column", 1)));
+                    publishSeatTable.setLayoutManager(new GridLayoutManager(Publish.this,column ));
                     publishSeatTable.setAdapter(seatTableAdapter);
                     if (getIntent().getBooleanExtra("isItemDecoration", false)) {
                         itemDecoration = SeatTable.getRecyclerViewDecoration();
@@ -595,6 +663,28 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                 }
             });
         }
+        if(getIntent().getBooleanExtra("hasPublishModel",false)){
+            Publish.this.runOnUiThread(new Runnable() {//图片和座位纵向有问题
+                @Override
+                public void run() {
+                    column = getIntent().getIntExtra("seat_column",0);
+                    publishTitleEdit.setText(getIntent().getStringExtra("publish_title"));
+                    publishStartTimeText.setText(getIntent().getStringExtra("start_time"));
+                    publishStopTimeText.setText(getIntent().getStringExtra("stop_time"));
+                    publishPeopleNumberEdit.setText(String.valueOf(getIntent().getIntExtra("people_number",0)));
+                    publishPlaceEdit.setText(getIntent().getStringExtra("publish_place"));
+                    seatTableAdapter = PublishModelList.getRecyclerViewAdapter();
+                    publishSeatTable.setLayoutManager(new GridLayoutManager(Publish.this, column));
+                    publishSeatTable.setAdapter(seatTableAdapter);
+                    publishInformationEdit.setText(new String(getIntent().getByteArrayExtra("information_text")));
+                    isSetSeatTable = true;
+                    publishSeatScroll.setVisibility(View.VISIBLE);
+                    publishSeatTableToast.setVisibility(View.GONE);
+                }
+            });
+        }
+
+
     }
 
     @Override

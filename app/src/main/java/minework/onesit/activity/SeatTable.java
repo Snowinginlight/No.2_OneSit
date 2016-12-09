@@ -1,16 +1,19 @@
 package minework.onesit.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -25,6 +28,7 @@ import cn.qqtheme.framework.picker.OptionPicker;
 import minework.onesit.R;
 import minework.onesit.fragment.plan.DividerItemDecoration;
 import minework.onesit.fragment.plan.SeatTableAdapter;
+import minework.onesit.util.MyRomateSQLUtil;
 
 /**
  * Created by 无知 on 2016/11/26.
@@ -40,6 +44,7 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     private static SeatTableAdapter mAdapter;
     private static TextView seatPosition;
     private boolean isToastPreview = false;
+    private static EditText seatTableTitle;
     private Button seatBack;
     private Button seatMenu;
     private Button seatAdd;
@@ -70,6 +75,14 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public static SeatTableAdapter getRecyclerViewAdapter() {
+        return mAdapter;
+    }
+
+    public static DividerItemDecoration getRecyclerViewDecoration() {
+        return decor;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +105,7 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
         seatRow = (TextView) findViewById(R.id.seat_row);
         seatColumn = (TextView) findViewById(R.id.seat_column);
         seatPosition = (TextView) findViewById(R.id.seat_position);
+        seatTableTitle = (EditText) findViewById(R.id.seat_table_title);
 
         seatRow.setText(String.valueOf(row));
         seatColumn.setText(String.valueOf(column));
@@ -134,11 +148,9 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
                 onBackPressed();
                 break;
             case R.id.seat_menu:
-
                 if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
                     seatMenuWindow.dismiss();
                     seatMenu.startAnimation(clockAnimation);
-                    return;
                 } else {
                     if (seatMenuWindow == null) {
                         initSeatMenuWindow();
@@ -240,16 +252,43 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
                 picker2.show();
                 break;
             case R.id.seat_finish:
-                Intent intent = new Intent(this,Publish.class);
-                intent.putExtra("hasSeatTable",true);
-                intent.putExtra("column",column);
-                intent.putExtra("isItemDecoration",isItemDecoration);
-                startActivity(intent);
+                Intent intentFinish = new Intent(this, Publish.class);
+                intentFinish.putExtra("hasSeatTable", true);
+                intentFinish.putExtra("column", column);
+                intentFinish.putExtra("isItemDecoration", isItemDecoration);
+                startActivity(intentFinish);
+                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
+                    seatMenuWindow.dismiss();
+                }
                 break;
             case R.id.seat_save:
-
+                if (!TextUtils.isEmpty(seatTableTitle.getText().toString())) {
+                    AlertDialog.Builder saveView = new AlertDialog.Builder(this);
+                    saveView.setMessage("确定上传到云端？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            MyRomateSQLUtil.saveSeatTable(seatTableTitle.getText().toString(), mDatas, row, column, isItemDecoration);
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onBackPressed();
+                        }
+                    });
+                    AlertDialog saveDialog = saveView.create();
+                    saveDialog.show();
+                } else {
+                    Toast.makeText(mContext,"标题不能为空",Toast.LENGTH_SHORT).show();
+                }
+                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
+                    seatMenuWindow.dismiss();
+                }
                 break;
             case R.id.seat_import:
+                startActivity(new Intent(this, SeatTableModelList.class));
+                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
+                    seatMenuWindow.dismiss();
+                }
                 break;
             default:
                 return;
@@ -268,13 +307,32 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
         seatFinish.setOnClickListener(this);
         seatImport.setOnClickListener(this);
     }
-    public static SeatTableAdapter getRecyclerViewAdapter(){
-        return mAdapter;
-    }
-    public static DividerItemDecoration getRecyclerViewDecoration(){
-        return decor;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getBooleanExtra("hasSeatTable", false)) {
+            SeatTable.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    column =  getIntent().getIntExtra("column", 1);
+                    row =  getIntent().getIntExtra("row", 1);
+                    seatColumn.setText(String.valueOf(column));
+                    seatRow.setText(String.valueOf(row));
+                    seatTableTitle.setText(getIntent().getStringExtra("title"));
+                    mAdapter = SeatTable.getRecyclerViewAdapter();
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(SeatTable.this, getIntent().getIntExtra("column", 1)));
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            });
+        }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 }
 
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/publish_edit_seat"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="#ffffff"
+        android:text="编辑座位"
+        android:textColor="@color/colorText"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/publish_import_model"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="#ffffff"
+        android:text="云端导入"
+        android:textColor="@color/colorText"
+        android:textSize="20dp" />
+    <Button
+        android:id="@+id/publish_save_model"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="#ffffff"
+        android:text="存至云端"
+        android:textColor="@color/colorText"
+        android:textSize="20dp" />
+    <Button
+        android:id="@+id/publish_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="#ffffff"
+        android:text="发布信息"
+        android:textColor="@color/colorText"
+        android:textSize="20dp" />
+</LinearLayout>

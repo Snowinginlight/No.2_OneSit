@@ -35,7 +35,12 @@
         <activity android:name=".activity.Publish"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".activity.SeatTable"/>
+        <activity android:name=".activity.PublishModelList"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.SeatTable"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.SeatTableModelList"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

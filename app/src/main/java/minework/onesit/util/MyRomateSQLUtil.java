@@ -3,6 +3,10 @@ package minework.onesit.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.maxleap.FindCallback;
@@ -15,6 +19,8 @@ import com.maxleap.exception.MLException;
 import java.util.List;
 
 import minework.onesit.activity.MyApplication;
+import minework.onesit.module.Publish;
+import minework.onesit.module.Seat;
 import minework.onesit.module.User;
 
 /**
@@ -22,10 +28,12 @@ import minework.onesit.module.User;
  */
 
 public class MyRomateSQLUtil {
+
+    private static boolean LoginOK = false;
+    private static boolean SignUpOK = false;
     private static Context mContext = MyApplication.getInstance();
 
-    public static boolean clickLogin(final String user_id, final String user_password) {
-        final boolean[] loginOK = {false};
+    public static void clickLogin(final String user_id, final String user_password, final Handler handler) {
         MLQuery<User> query = MLQuery.getQuery("OneSit_User");
         query.whereEqualTo("user_id", user_id);
         query.whereEqualTo("user_password", user_password);
@@ -39,17 +47,18 @@ public class MyRomateSQLUtil {
                     editor.putString("user_id", user_id);
                     editor.putString("user_password", user_password);
                     editor.commit();
-                    loginOK[0] = true;
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = true;
+                    handler.sendMessage(message);
                 } else {
                     Toast.makeText(mContext, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        return loginOK[0];
     }
 
-    public static boolean signUp(final String user_id, final String user_password, String confirm_password, final String user_email) {
-        final boolean[] loginOK = {false};
+    public static void signUp(final String user_id, final String user_password, String confirm_password, final String user_email, final Handler handler) {
         if (!user_password.equals(confirm_password)) {
             Toast.makeText(mContext, "两次密码不一致", Toast.LENGTH_SHORT).show();
         } else {
@@ -75,7 +84,11 @@ public class MyRomateSQLUtil {
                                     editor.putString("user_id", user_id);
                                     editor.putString("user_password", user_password);
                                     editor.commit();
-                                    loginOK[0] = true;
+                                    Message message = new Message();
+                                    message.what = 0;
+                                    message.obj = true;
+                                    handler.sendMessage(message);
+                                    return;
                                 } else {
                                     Toast.makeText(mContext, "注册失败，请重试！", Toast.LENGTH_SHORT).show();
                                 }
@@ -85,6 +98,89 @@ public class MyRomateSQLUtil {
                 }
             });
         }
-        return loginOK[0];
     }
+
+    public static void getSeatTableList(final Handler handler) {
+        MLQuery<Seat> query = MLQuery.getQuery("OneSit_Seat");
+        query.whereEqualTo("user_id", MyLocalSQLUtil.getLocalUserId());
+        MLQueryManager.findAllInBackground(query, new FindCallback<Seat>() {
+            public void done(List<Seat> seatTableList, MLException e) {
+                if (e == null) {
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = seatTableList;
+                    handler.sendMessage(message);
+                } else {
+                    Message message = new Message();
+                    message.what = -1;
+                    handler.sendMessage(message);
+                    Log.d("result", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    public static void saveSeatTable(String title, List<Integer> mDatas, int row, int column, boolean decoration) {
+        Seat seat = new Seat();
+        seat.setUser_id(MyLocalSQLUtil.getLocalUserId());
+        seat.setSeat_title(title);
+        seat.setSeat_table(mDatas);
+        seat.setSeat_row(row);
+        seat.setSeat_column(column);
+        seat.setSeat_divider(decoration);
+        MLDataManager.saveInBackground(seat, new SaveCallback() {
+            @Override
+            public void done(MLException e) {
+                if (e == null) {
+                    Toast.makeText(mContext, "上传成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "上传失败，请重试！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static void savePublish(String title, List<Integer> mDatas,int column, String start_time, String stop_time, int people_number, String plan_place, Editable information_text) {
+        Publish publish = new Publish();
+        publish.setUser_id(MyLocalSQLUtil.getLocalUserId());
+        publish.setPublish_title(title);
+        publish.setSeat_table(mDatas);
+        publish.setSeat_column(column);
+        publish.setStart_time(start_time);
+        publish.setStop_time(stop_time);
+        publish.setPeople_number(people_number);
+        publish.setPublish_place(plan_place);
+        publish.setInformation_text(information_text);
+        MLDataManager.saveInBackground(publish, new SaveCallback() {
+            @Override
+            public void done(MLException e) {
+                if (e == null) {
+                    Toast.makeText(mContext, "上传成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "上传失败，请重试！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static void getPublishModelList(final Handler handler) {
+        MLQuery<Publish> query = MLQuery.getQuery("OneSit_Publish");
+        query.whereEqualTo("user_id", MyLocalSQLUtil.getLocalUserId());
+        MLQueryManager.findAllInBackground(query, new FindCallback<Publish>() {
+            public void done(List<Publish> publishModelList, MLException e) {
+                if (e == null) {
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = publishModelList;
+                    handler.sendMessage(message);
+                } else {
+                    Message message = new Message();
+                    message.what = -1;
+                    handler.sendMessage(message);
+                    Log.d("result", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
 }

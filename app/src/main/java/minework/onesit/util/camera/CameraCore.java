@@ -12,8 +12,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 
@@ -37,8 +39,13 @@ public class CameraCore {
     public static final int REQUEST_HEIGHT = 400;
     //截取图片的宽度
     public static final int REQUEST_WIDTH = 400;
-    //用来存储照片的URL
+    //保存地址
+    private final String externalStorageDirectory = Environment.getExternalStorageDirectory().getPath() + "/picture/";
+    //用来存储原照片的URL
     private Uri photoURL;
+    //用来存储裁剪后的URL
+    private File tempFile;
+    private File temp;
     //调用照片的Activity
     private Activity activity;
     //回调函数
@@ -64,6 +71,7 @@ public class CameraCore {
                     cursor.close();
                 }
             }
+            Log.d("Test",filePath);
             return filePath;
         } catch (Exception e) {
             return contentUri.getPath();
@@ -81,7 +89,6 @@ public class CameraCore {
 
     //调用系统图库,对Intent参数进行封装
     protected Intent startTakePicture() {
-        //this.photoURL = photoURL;
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");//从所有图片中进行选择
@@ -91,7 +98,7 @@ public class CameraCore {
     //调用系统裁剪图片，对Intent参数进行封装
     protected Intent takeCropPicture(Uri photoURL, int with, int height) {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoURL, "image/*");
+        intent.setDataAndType(photoURL,"image/*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
@@ -99,7 +106,7 @@ public class CameraCore {
         intent.putExtra("outputY", height);
         intent.putExtra("scale", true);
         intent.putExtra("scaleUpIfNeeded", true);//黑边
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURL);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
         intent.putExtra("return-data", false);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true); // no face detection
@@ -108,11 +115,13 @@ public class CameraCore {
 
     //拍照
     public void getPhoto2Camera(Uri uri) {
+        initTempURL();
         activity.startActivityForResult(startTakePhoto(uri), REQUEST_TAKE_PHOTO_CODE);
     }
 
     //拍照后裁剪
     public void getPhoto2CameraCrop(Uri uri) {
+        initTempURL();
         Intent intent = startTakePhoto(uri);
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);//将拍取的照片保存到指定URI
         activity.startActivityForResult(intent, REQUEST_TAKE_PHOTO_CROP_CODE);
@@ -120,11 +129,13 @@ public class CameraCore {
 
     //获取系统相册
     public void getPhoto2Album() {
+        initTempURL();
         activity.startActivityForResult(startTakePicture(), REQUEST_TAKE_PICTURE_CODE);
     }
 
     //获取系统相册后裁剪
     public void getPhoto2AlbumCrop() {
+        initTempURL();
         activity.startActivityForResult(startTakePicture(), REQUEST_TAKE_PICTURE_CROP_CODE);
     }
 
@@ -164,8 +175,7 @@ public class CameraCore {
                     break;
                 //裁剪之后的回调
                 case REQUEST_TAKE_CROP_CODE:
-                    String path = getPic2Uri(photoURL, activity);
-                    cameraResult.onSuccess(path);
+                    cameraResult.onSuccess(tempFile.getPath());
                     break;
                 default:
                     break;
@@ -184,9 +194,17 @@ public class CameraCore {
     //回调实例
     public interface CameraResult {
         //成功回调
-        public void onSuccess(String filePaht);
+        public void onSuccess(String filePath);
 
         //失败
         public void onFail(String message);
+    }
+
+    private void initTempURL(){
+        temp = new File(externalStorageDirectory);
+        if (!temp.exists()) {
+            temp.mkdirs();
+        }
+        tempFile = new File(externalStorageDirectory+"tempFile.jpg");
     }
 }

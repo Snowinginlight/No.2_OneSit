@@ -25,6 +25,10 @@ public class SeatTableAdapter extends RecyclerView.Adapter<SeatTableAdapter.MyVi
         super();
         this.mDatas = mDatas;
     }
+
+    public List<Integer> getList(){
+        return mDatas;
+    }
     public void changeData(int position,int newColor){
         mDatas.set(position,newColor);
         notifyItemChanged(position);

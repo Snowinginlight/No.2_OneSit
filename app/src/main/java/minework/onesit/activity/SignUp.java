@@ -2,6 +2,8 @@ package minework.onesit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,14 +17,28 @@ import minework.onesit.util.MyRomateSQLUtil;
 
 public class SignUp extends BaseActivity implements View.OnClickListener {
 
-    private static boolean signUpStatus = false;
-
     private Button signUpSignUp;
     private EditText idSignUp;
     private EditText passwordSignUp;
     private EditText confirmSignUp;
     private EditText emailSignUp;
 
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what) {
+                case 0:
+                    if ((boolean) message.obj) {
+                        SignUp.this.finish();
+                        startActivity(new Intent(SignUp.this, MainActivity.class));
+                    }
+                    break;
+                default:
+                    return true;
+            }
+            return true;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +62,11 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_up_signup:
-                if (MyRomateSQLUtil.signUp(idSignUp.getText().toString(), passwordSignUp.getText().toString(), confirmSignUp.getText().toString(), emailSignUp.getText().toString())) {
-                    SignUp.this.finish();
-                    startActivity(new Intent(SignUp.this, MainActivity.class));
-                }
+                MyRomateSQLUtil.signUp(idSignUp.getText().toString(), passwordSignUp.getText().toString(), confirmSignUp.getText().toString(), emailSignUp.getText().toString(), mHandler);
                 break;
             default:
                 return;
         }
     }
+
 }
