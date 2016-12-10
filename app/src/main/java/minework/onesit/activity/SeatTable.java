@@ -43,8 +43,8 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     private static List<Integer> mDatas;
     private static SeatTableAdapter mAdapter;
     private static TextView seatPosition;
-    private boolean isToastPreview = false;
     private static EditText seatTableTitle;
+    private boolean isToastPreview = false;
     private Button seatBack;
     private Button seatMenu;
     private Button seatAdd;
@@ -77,6 +77,10 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
 
     public static SeatTableAdapter getRecyclerViewAdapter() {
         return mAdapter;
+    }
+
+    public static void setRecyclerViewAdapter(SeatTableAdapter seatTableAdapter) {
+        mAdapter = seatTableAdapter;
     }
 
     public static DividerItemDecoration getRecyclerViewDecoration() {
@@ -278,7 +282,7 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
                     AlertDialog saveDialog = saveView.create();
                     saveDialog.show();
                 } else {
-                    Toast.makeText(mContext,"标题不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "标题不能为空", Toast.LENGTH_SHORT).show();
                 }
                 if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
                     seatMenuWindow.dismiss();
@@ -315,12 +319,11 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
             SeatTable.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    column =  getIntent().getIntExtra("column", 1);
-                    row =  getIntent().getIntExtra("row", 1);
+                    column = getIntent().getIntExtra("column", 1);
+                    row = getIntent().getIntExtra("row", 1);
                     seatColumn.setText(String.valueOf(column));
                     seatRow.setText(String.valueOf(row));
                     seatTableTitle.setText(getIntent().getStringExtra("title"));
-                    mAdapter = SeatTable.getRecyclerViewAdapter();
                     mRecyclerView.setLayoutManager(new GridLayoutManager(SeatTable.this, getIntent().getIntExtra("column", 1)));
                     mRecyclerView.setAdapter(mAdapter);
                 }

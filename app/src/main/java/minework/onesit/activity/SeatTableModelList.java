@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import minework.onesit.R;
-import minework.onesit.fragment.plan.ListAdapter;
+import minework.onesit.fragment.plan.ModelListAdapter;
 import minework.onesit.fragment.plan.SeatTableAdapter;
 import minework.onesit.module.Seat;
 import minework.onesit.util.MyRomateSQLUtil;
@@ -28,9 +28,8 @@ public class SeatTableModelList extends BaseActivity {
 
     private static List<String> mDatas = new ArrayList<String>();
     private static List<Seat> seatList;
-    private static SeatTableAdapter seatAdapter;
     private RecyclerView seatTableList;
-    private ListAdapter mAdapter;
+    private ModelListAdapter mAdapter;
     private List<Integer> seatDatas;
     private Button seatTableBack;
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -49,7 +48,7 @@ public class SeatTableModelList extends BaseActivity {
                     }
                     if (mDatas.size() != 0) {
                         seatTableList.setLayoutManager(new LinearLayoutManager(SeatTableModelList.this));
-                        seatTableList.setAdapter(mAdapter = new ListAdapter(mDatas, mHandler));
+                        seatTableList.setAdapter(mAdapter = new ModelListAdapter(mDatas, mHandler));
                     } else {
                         findViewById(R.id.seat_table_model_list_toast).setVisibility(View.VISIBLE);
                         seatTableList.setVisibility(View.GONE);
@@ -64,7 +63,7 @@ public class SeatTableModelList extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
-                    seatAdapter = new SeatTableAdapter(seatDatas);
+                    SeatTable.setRecyclerViewAdapter(new SeatTableAdapter(seatDatas));
                     Intent intentFinish = new Intent(SeatTableModelList.this, SeatTable.class);
                     intentFinish.putExtra("hasSeatTable", true);
                     intentFinish.putExtra("title", seatList.get((int) message.obj).getSeat_title());
@@ -80,10 +79,6 @@ public class SeatTableModelList extends BaseActivity {
 
     public static Seat getSeatList(int position) {
         return seatList.get(position);
-    }
-
-    public static SeatTableAdapter getRecyclerViewAdapter() {
-        return seatAdapter;
     }
 
     @Override

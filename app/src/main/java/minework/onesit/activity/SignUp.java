@@ -30,7 +30,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
                 case 0:
                     if ((boolean) message.obj) {
                         SignUp.this.finish();
-                        startActivity(new Intent(SignUp.this, MainActivity.class));
+                        startActivity(new Intent(SignUp.this, Main.class));
                     }
                     break;
                 default:

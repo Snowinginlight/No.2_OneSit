@@ -12,7 +12,9 @@ import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -231,7 +233,12 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                     saveView.setMessage("确定上传到云端？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            MyRomateSQLUtil.savePublish(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),publishInformationEdit.getText());
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                MyRomateSQLUtil.savePublishModel(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),Html.toHtml(publishInformationEdit.getText(),Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL));
+                            } else {
+                                MyRomateSQLUtil.savePublishModel(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),Html.toHtml(publishInformationEdit.getText()));
+                            }
+
                         }
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -673,10 +680,15 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                     publishStopTimeText.setText(getIntent().getStringExtra("stop_time"));
                     publishPeopleNumberEdit.setText(String.valueOf(getIntent().getIntExtra("people_number",0)));
                     publishPlaceEdit.setText(getIntent().getStringExtra("publish_place"));
-                    seatTableAdapter = PublishModelList.getRecyclerViewAdapter();
+                    seatTableAdapter = SeatTable.getRecyclerViewAdapter();
                     publishSeatTable.setLayoutManager(new GridLayoutManager(Publish.this, column));
                     publishSeatTable.setAdapter(seatTableAdapter);
-                    publishInformationEdit.setText(new String(getIntent().getByteArrayExtra("information_text")));
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        publishInformationEdit.setText(Html.fromHtml(getIntent().getStringExtra("information_text"),Html.FROM_HTML_MODE_LEGACY));
+                    } else {
+                        publishInformationEdit.setText(Html.fromHtml(getIntent().getStringExtra("information_text")));
+                    }
+
                     isSetSeatTable = true;
                     publishSeatScroll.setVisibility(View.VISIBLE);
                     publishSeatTableToast.setVisibility(View.GONE);

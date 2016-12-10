@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * Created by 无知 on 2016/12/10.
  */
-@MLClassName("OneSit_Publish")
-public class Publish extends MLObject {
+@MLClassName("OneSit_Plan")
+public class Plan extends MLObject {
 
-    public Publish() {
+    public Plan(){
+
     }
-
     //用户名
     public String getUser_id() {
         return getString("user_id");
@@ -24,16 +24,14 @@ public class Publish extends MLObject {
     public void setUser_id(String user_id) {
         put("user_id", user_id);
     }
-
-    //计划标题
-    public String getPublish_title() {
-        return getString("publish_title");
+    //标题
+    public String getPlan_title() {
+        return getString("plan_title");
     }
 
-    public void setPublish_title(String publish_title) {
-        put("publish_title", publish_title);
+    public void setPlan_title(String plan_title) {
+        put("plan_title", plan_title);
     }
-
     //起始时间
     public String getStart_time() {
         return getString("start_time");
@@ -42,7 +40,6 @@ public class Publish extends MLObject {
     public void setStart_time(String start_time) {
         put("start_time", start_time);
     }
-
     //终止时间
     public String getStop_time() {
         return getString("stop_time");
@@ -51,26 +48,15 @@ public class Publish extends MLObject {
     public void setStop_time(String stop_time) {
         put("stop_time", stop_time);
     }
-
     //地点
-    public String getPublish_place() {
-        return getString("publish_place");
+    public String getPlan_place() {
+        return getString("plan_place");
     }
 
-    public void setPublish_place(String publish_place) {
-        put("publish_place", publish_place);
+    public void setPlan_place(String plan_place) {
+        put("plan_place", plan_place);
     }
-
-    //人数上限
-    public int getPeople_number() {
-        return getInt("people_number");
-    }
-
-    public void setPeople_number(int people_number) {
-        put("people_number", people_number);
-    }
-
-    //座位图
+    //座位
     public JSONArray getSeat_table() {
         return getJSONArray("seat_table");
     }
@@ -81,16 +67,6 @@ public class Publish extends MLObject {
             seat_table.put(i);
         put("seat_table", seat_table);
     }
-
-    //列
-    public int getSeat_column() {
-        return getInt("seat_column");
-    }
-
-    public void setSeat_column(int seat_column) {
-        put("seat_column", seat_column);
-    }
-
     //详情
     public String getInformation_text() {
         return getString("information_text");
@@ -99,4 +75,5 @@ public class Publish extends MLObject {
     public void setInformation_text(String information_text) {
         put("information_text", information_text);
     }
+
 }

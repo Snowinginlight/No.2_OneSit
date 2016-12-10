@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import java.util.Map;
 import minework.onesit.R;
 import minework.onesit.activity.MyApplication;
 import minework.onesit.activity.Publish;
+import minework.onesit.activity.PublishModelList;
 
 /**
  * Created by 无知 on 2016/11/12.
@@ -50,7 +55,23 @@ public class PlanFragment extends Fragment implements View.OnClickListener {
     private Button nextMonth;
     private String[] calendarFrom;
     private int[] calendarTo;
+    //计划条
+    private RecyclerView planList;
+    private PlanListAdapter planListAdapter;
+    private List<String> mDatas;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what) {
+                case 1:
 
+                    break;
+                default:
+                    return true;
+            }
+            return true;
+        }
+    });
     public PlanFragment() {
         super();
         mContext = MyApplication.getInstance();
@@ -69,6 +90,9 @@ public class PlanFragment extends Fragment implements View.OnClickListener {
         planCalendarButton = (Button) planLayout.findViewById(R.id.plan_calendar_button);
         planTopTitle = (TextView) planLayout.findViewById(R.id.plan_top_title);
         planPublishButton = (Button) planLayout.findViewById(R.id.plan_publish_button);
+        planList = (RecyclerView)planLayout.findViewById(R.id.plan_list);
+        planList.setLayoutManager(new LinearLayoutManager(mContext));
+        //planList.setAdapter(planListAdapter = new PlanListAdapter(mDatas,mHandler));
 
         planCalendarButton.setOnClickListener(this);
         planPublishButton.setOnClickListener(this);
@@ -148,10 +172,6 @@ public class PlanFragment extends Fragment implements View.OnClickListener {
         calendarTo = new int[]{R.id.date_text};
         calendarAdapter = new SimpleAdapter(mContext, data, R.layout.date_item, calendarFrom, calendarTo);
         calendarData.setAdapter(calendarAdapter);
-    }
-
-    private void initPlanList() {
-
     }
 
     @Override

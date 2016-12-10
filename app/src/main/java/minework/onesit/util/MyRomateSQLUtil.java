@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,7 +18,7 @@ import com.maxleap.exception.MLException;
 import java.util.List;
 
 import minework.onesit.activity.MyApplication;
-import minework.onesit.module.Publish;
+import minework.onesit.module.PublishModel;
 import minework.onesit.module.Seat;
 import minework.onesit.module.User;
 
@@ -135,43 +134,45 @@ public class MyRomateSQLUtil {
                     Toast.makeText(mContext, "上传成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "上传失败，请重试！", Toast.LENGTH_SHORT).show();
+                    Log.d("result", "Error: " + e.getMessage());
                 }
             }
         });
     }
 
-    public static void savePublish(String title, List<Integer> mDatas,int column, String start_time, String stop_time, int people_number, String plan_place, Editable information_text) {
-        Publish publish = new Publish();
-        publish.setUser_id(MyLocalSQLUtil.getLocalUserId());
-        publish.setPublish_title(title);
-        publish.setSeat_table(mDatas);
-        publish.setSeat_column(column);
-        publish.setStart_time(start_time);
-        publish.setStop_time(stop_time);
-        publish.setPeople_number(people_number);
-        publish.setPublish_place(plan_place);
-        publish.setInformation_text(information_text);
-        MLDataManager.saveInBackground(publish, new SaveCallback() {
+    public static void savePublishModel(String title, List<Integer> mDatas,int column, String start_time, String stop_time, int people_number, String plan_place, String information_text) {
+        PublishModel publishModel = new PublishModel();
+        publishModel.setUser_id(MyLocalSQLUtil.getLocalUserId());
+        publishModel.setPublish_Model_title(title);
+        publishModel.setSeat_table(mDatas);
+        publishModel.setSeat_column(column);
+        publishModel.setStart_time(start_time);
+        publishModel.setStop_time(stop_time);
+        publishModel.setPeople_number(people_number);
+        publishModel.setPublish_Model_place(plan_place);
+        publishModel.setInformation_text(information_text);
+        MLDataManager.saveInBackground(publishModel, new SaveCallback() {
             @Override
             public void done(MLException e) {
                 if (e == null) {
                     Toast.makeText(mContext, "上传成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "上传失败，请重试！", Toast.LENGTH_SHORT).show();
+                    Log.d("result", "Error: " + e.getMessage());
                 }
             }
         });
     }
 
     public static void getPublishModelList(final Handler handler) {
-        MLQuery<Publish> query = MLQuery.getQuery("OneSit_Publish");
+        MLQuery<PublishModel> query = MLQuery.getQuery("OneSit_PublishModel");
         query.whereEqualTo("user_id", MyLocalSQLUtil.getLocalUserId());
-        MLQueryManager.findAllInBackground(query, new FindCallback<Publish>() {
-            public void done(List<Publish> publishModelList, MLException e) {
+        MLQueryManager.findAllInBackground(query, new FindCallback<PublishModel>() {
+            public void done(List<PublishModel> publishModelModelList, MLException e) {
                 if (e == null) {
                     Message message = new Message();
                     message.what = 0;
-                    message.obj = publishModelList;
+                    message.obj = publishModelModelList;
                     handler.sendMessage(message);
                 } else {
                     Message message = new Message();
@@ -182,5 +183,4 @@ public class MyRomateSQLUtil {
             }
         });
     }
-
 }

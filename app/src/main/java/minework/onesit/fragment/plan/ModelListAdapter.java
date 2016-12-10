@@ -17,10 +17,10 @@ import minework.onesit.activity.MyApplication;
  * Created by 无知 on 2016/12/7.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
+public class ModelListAdapter extends RecyclerView.Adapter<ModelListAdapter.MyViewHolder> {
     private static List<String> mDatas;
     private Handler mHandler;
-    public ListAdapter(List<String> mDatas,Handler mHandler) {
+    public ModelListAdapter(List<String> mDatas, Handler mHandler) {
         super();
         this.mDatas = mDatas;
         this.mHandler = mHandler;

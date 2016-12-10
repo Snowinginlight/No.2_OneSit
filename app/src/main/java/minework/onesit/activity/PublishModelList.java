@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import minework.onesit.R;
-import minework.onesit.fragment.plan.ListAdapter;
+import minework.onesit.fragment.plan.ModelListAdapter;
 import minework.onesit.fragment.plan.SeatTableAdapter;
-import minework.onesit.module.Publish;
-import minework.onesit.module.Seat;
+import minework.onesit.module.PublishModel;
 import minework.onesit.util.MyRomateSQLUtil;
 
 /**
@@ -28,10 +26,9 @@ import minework.onesit.util.MyRomateSQLUtil;
 
 public class PublishModelList extends BaseActivity {
     private static List<String> mDatas = new ArrayList<String>();
-    private static List<Publish> publishList;
-    private static SeatTableAdapter seatAdapter;
-    private RecyclerView publishModelList;
-    private ListAdapter mAdapter;
+    private static List<PublishModel> publishModelList;
+    private RecyclerView publishModelRecycler;
+    private ModelListAdapter mAdapter;
     private List<Integer> seatDatas;
     private Button publishModelBack;
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -40,41 +37,41 @@ public class PublishModelList extends BaseActivity {
             switch (message.what) {
                 case -1:
                     findViewById(R.id.publish_model_list_toast).setVisibility(View.VISIBLE);
-                    publishModelList.setVisibility(View.GONE);
+                    publishModelRecycler.setVisibility(View.GONE);
                     break;
                 case 0:
-                    publishList = (List<Publish>) message.obj;
-                    for (Publish publish : publishList) {
-                        if (!mDatas.contains(publish.getPublish_title()))
-                            mDatas.add(publish.getPublish_title());
+                    publishModelList = (List<PublishModel>) message.obj;
+                    for (PublishModel publishModel : publishModelList) {
+                        if (!mDatas.contains(publishModel.getPublish_Model_title()))
+                            mDatas.add(publishModel.getPublish_Model_title());
                     }
                     if (mDatas.size() != 0) {
-                        publishModelList.setLayoutManager(new LinearLayoutManager(PublishModelList.this));
-                        publishModelList.setAdapter(mAdapter = new ListAdapter(mDatas, mHandler));
+                        publishModelRecycler.setLayoutManager(new LinearLayoutManager(PublishModelList.this));
+                        publishModelRecycler.setAdapter(mAdapter = new ModelListAdapter(mDatas, mHandler));
                     } else {
                         findViewById(R.id.publish_model_list_toast).setVisibility(View.VISIBLE);
-                        publishModelList.setVisibility(View.GONE);
+                        publishModelRecycler.setVisibility(View.GONE);
                     }
                     break;
                 case 1:
                     seatDatas = new ArrayList<Integer>();
-                    for (int i = 0; i < publishList.get((int) message.obj).getSeat_table().length(); i++) {
+                    for (int i = 0; i < publishModelList.get((int) message.obj).getSeat_table().length(); i++) {
                         try {
-                            seatDatas.add(publishList.get((int) message.obj).getSeat_table().getInt(i));
+                            seatDatas.add(publishModelList.get((int) message.obj).getSeat_table().getInt(i));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                    seatAdapter = new SeatTableAdapter(seatDatas);
+                    SeatTable.setRecyclerViewAdapter(new SeatTableAdapter(seatDatas));
                     Intent intentFinish = new Intent(PublishModelList.this, minework.onesit.activity.Publish.class);
                     intentFinish.putExtra("hasPublishModel", true);
-                    intentFinish.putExtra("publish_title", publishList.get((int) message.obj).getPublish_title());
-                    intentFinish.putExtra("start_time", publishList.get((int) message.obj).getStart_time());
-                    intentFinish.putExtra("stop_time", publishList.get((int) message.obj).getStop_time());
-                    intentFinish.putExtra("seat_column", publishList.get((int) message.obj).getSeat_column());
-                    intentFinish.putExtra("people_number", publishList.get((int) message.obj).getPeople_number());
-                    intentFinish.putExtra("publish_place", publishList.get((int) message.obj).getPublish_place());
-                    intentFinish.putExtra("information_text", publishList.get((int) message.obj).getInformation_text());
+                    intentFinish.putExtra("publish_title", publishModelList.get((int) message.obj).getPublish_Model_title());
+                    intentFinish.putExtra("start_time", publishModelList.get((int) message.obj).getStart_time());
+                    intentFinish.putExtra("stop_time", publishModelList.get((int) message.obj).getStop_time());
+                    intentFinish.putExtra("seat_column", publishModelList.get((int) message.obj).getSeat_column());
+                    intentFinish.putExtra("people_number", publishModelList.get((int) message.obj).getPeople_number());
+                    intentFinish.putExtra("publish_place", publishModelList.get((int) message.obj).getPublish_Model_place());
+                    intentFinish.putExtra("information_text", publishModelList.get((int) message.obj).getInformation_text());
                     startActivity(intentFinish);
                 default:
                     return true;
@@ -83,12 +80,8 @@ public class PublishModelList extends BaseActivity {
         }
     });
 
-    public static Publish getPublishList(int position) {
-        return publishList.get(position);
-    }
-
-    public static SeatTableAdapter getRecyclerViewAdapter() {
-        return seatAdapter;
+    public static PublishModel getPublishList(int position) {
+        return publishModelList.get(position);
     }
 
     @Override
@@ -101,7 +94,7 @@ public class PublishModelList extends BaseActivity {
     @Override
     protected void init() {
         MyRomateSQLUtil.getPublishModelList(mHandler);
-        publishModelList = (RecyclerView) findViewById(R.id.publish_model_list);
+        publishModelRecycler = (RecyclerView) findViewById(R.id.publish_model_list);
         publishModelBack = (Button) findViewById(R.id.publish_model_back);
         publishModelBack.setOnClickListener(new View.OnClickListener() {
             @Override

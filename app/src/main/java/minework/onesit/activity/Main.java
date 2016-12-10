@@ -17,7 +17,7 @@ import minework.onesit.fragment.plan.PlanFragment;
  * Created by 无知 on 2016/11/22.
  */
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class Main extends BaseActivity implements View.OnClickListener {
 
     private long exitTime = 0;
     //四大板块

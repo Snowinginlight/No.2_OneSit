@@ -31,7 +31,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                 case 0:
                     if ((boolean)message.obj) {
                         Login.this.finish();
-                        startActivity(new Intent(Login.this, MainActivity.class));
+                        startActivity(new Intent(Login.this, Main.class));
                     }
                     break;
                 default:

@@ -7,9 +7,7 @@ import com.maxleap.MLObject;
 import com.maxleap.MaxLeap;
 
 import minework.onesit.R;
-import minework.onesit.module.Publish;
-import minework.onesit.module.Seat;
-import minework.onesit.module.User;
+import minework.onesit.module.*;
 import minework.onesit.util.MyLocalSQLUtil;
 import minework.onesit.util.MyUtil;
 
@@ -29,7 +27,9 @@ public class Welcome extends BaseActivity {
         //MaxLeap数据库 接入
         if (!isMaxLeapInit) {
             MLObject.registerSubclass(User.class);
-            MLObject.registerSubclass(Publish.class);
+            MLObject.registerSubclass(Plan.class);
+            MLObject.registerSubclass(PublishModel.class);
+            MLObject.registerSubclass(minework.onesit.module.Publish.class);
             MLObject.registerSubclass(Seat.class);
             MaxLeap.initialize(this, "58286e3069dbd100071784e6", "QWlDNllkZU8zUzRuQXBsY3VJLXBZQQ", MaxLeap.REGION_CN);
             isMaxLeapInit = true;
@@ -56,7 +56,7 @@ public class Welcome extends BaseActivity {
                     public void run() {
                         Intent intent;
                         if (loginOK) {
-                            intent = new Intent(Welcome.this, MainActivity.class);
+                            intent = new Intent(Welcome.this, Main.class);
                         } else {
                             intent = new Intent(Welcome.this, Login.class);
                         }
