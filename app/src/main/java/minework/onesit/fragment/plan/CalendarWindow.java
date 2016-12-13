@@ -31,7 +31,6 @@ public class CalendarWindow extends PopupWindow {
         return date_list;
     }
 
-
     public static List<DateTime> getDateTimesByMonth(DateTime d) {
         DateTime temp = new DateTime(d.getYear(), d.getMonthOfYear(), 1, 0, 0);
 

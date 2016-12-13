@@ -1,7 +1,9 @@
 package minework.onesit.fragment.plan;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,29 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.planListItemTitle.setText(mDatas.get(position));
+        switch (position%6){
+            case 0:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#72b792"));
+                break;
+            case 1:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#90b9a3"));
+                break;
+            case 2:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#8bbf8f"));
+                break;
+            case 3:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#aac391"));
+                break;
+            case 4:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#a9ce92"));
+                break;
+            case 5:
+                holder.planListItemCard.setCardBackgroundColor(Color.parseColor("#afd2a7"));
+                break;
+            default:
+                return;
+
+        }
     }
 
     @Override
@@ -45,16 +70,17 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
+        private CardView planListItemCard;
         private TextView planListItemTitle;
         public MyViewHolder(View view) {
             super(view);
+            planListItemCard = (CardView)view.findViewById(R.id.plan_list_item_card);
             planListItemTitle = (TextView)view.findViewById(R.id.plan_list_item_title);
-            planListItemTitle.setOnClickListener(new View.OnClickListener() {
+            planListItemCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Message msg = new Message();
-                    msg.what = 1;
+                    msg.what = 0;
                     msg.obj = getAdapterPosition();
                     mHandler.sendMessage(msg);
                 }

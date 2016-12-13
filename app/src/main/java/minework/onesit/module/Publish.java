@@ -4,6 +4,8 @@ import com.maxleap.MLClassName;
 import com.maxleap.MLObject;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -81,7 +83,23 @@ public class Publish extends MLObject {
             seat_table.put(i);
         put("seat_table", seat_table);
     }
+    //人员名录
+    public JSONArray getJoin_list() {
+        return getJSONArray("join_list");
+    }
 
+    public void setJoin_list(String user_id,String position) {
+        JSONObject mDatas = new JSONObject();
+        try {
+            mDatas.put("user_id",user_id);
+            mDatas.put("user_position",position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONArray join_list = new JSONArray();
+        join_list.put(mDatas);
+        put("join_list",join_list);
+    }
     //列
     public int getSeat_column() {
         return getInt("seat_column");

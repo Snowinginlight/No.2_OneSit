@@ -18,6 +18,8 @@ import com.maxleap.exception.MLException;
 import java.util.List;
 
 import minework.onesit.activity.MyApplication;
+import minework.onesit.module.PlanSelf;
+import minework.onesit.module.Publish;
 import minework.onesit.module.PublishModel;
 import minework.onesit.module.Seat;
 import minework.onesit.module.User;
@@ -178,6 +180,51 @@ public class MyRomateSQLUtil {
                     Message message = new Message();
                     message.what = -1;
                     handler.sendMessage(message);
+                    Log.d("result", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+    public static void savePublish(String title, List<Integer> mDatas,int column, String start_time, String stop_time, int people_number, String plan_place, String information_text) {
+        Publish publish = new Publish();
+        publish.setUser_id(MyLocalSQLUtil.getLocalUserId());
+        publish.setPublish_title(title);
+        publish.setSeat_table(mDatas);
+        publish.setSeat_column(column);
+        publish.setStart_time(start_time);
+        publish.setStop_time(stop_time);
+        publish.setPeople_number(people_number);
+        publish.setPublish_place(plan_place);
+        publish.setInformation_text(information_text);
+        MLDataManager.saveInBackground(publish, new SaveCallback() {
+            @Override
+            public void done(MLException e) {
+                if (e == null) {
+                    Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "发布失败，请重试！", Toast.LENGTH_SHORT).show();
+                    Log.d("result", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+    public static void savePlanSelf(String title,String start_time, String stop_time,String remind_time,String plan_place,String plan_seat, String plan_tips) {
+        PlanSelf planSelf = new PlanSelf();
+        planSelf.setUser_id(MyLocalSQLUtil.getLocalUserId());
+        planSelf.setPlan_title(title);
+        planSelf.setStart_time(start_time);
+        planSelf.setStop_time(stop_time);
+        planSelf.setRemind_time(remind_time);
+        planSelf.setPlan_place(plan_place);
+        planSelf.setPlan_seat(plan_seat);
+        planSelf.setPlan_tips(plan_tips);
+        MLDataManager.saveInBackground(planSelf, new SaveCallback() {
+            @Override
+            public void done(MLException e) {
+                if (e == null) {
+                    Toast.makeText(mContext, "添加并云端同步成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "本地添加成功", Toast.LENGTH_SHORT).show();
                     Log.d("result", "Error: " + e.getMessage());
                 }
             }

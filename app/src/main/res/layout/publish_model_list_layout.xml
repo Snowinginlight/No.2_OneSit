@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="云端"
-            android:textColor="@color/colorText"
+            android:textColor="#ffffff"
             android:textSize="30sp" />
 
     </RelativeLayout>

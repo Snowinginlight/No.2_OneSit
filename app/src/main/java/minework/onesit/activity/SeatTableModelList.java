@@ -1,6 +1,8 @@
 package minework.onesit.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +34,7 @@ public class SeatTableModelList extends BaseActivity {
     private ModelListAdapter mAdapter;
     private List<Integer> seatDatas;
     private Button seatTableBack;
+    private Context mContext;
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -85,6 +88,7 @@ public class SeatTableModelList extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seat_table_model_list_layout);
+        mContext = MyApplication.getInstance();
         init();
     }
 
@@ -96,6 +100,12 @@ public class SeatTableModelList extends BaseActivity {
         seatTableBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AnimationDrawable animBack = new AnimationDrawable();
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
+                animBack.setOneShot(true);
+                seatTableBack.setBackground(animBack);
+                animBack.start();
                 onBackPressed();
             }
         });

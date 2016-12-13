@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,13 +12,13 @@
         android:background="@mipmap/top_bar">
 
         <Button
-            android:id="@+id/plan_calendar_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/plan_create_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@mipmap/calendar_w" />
+            android:background="@mipmap/create_icon" />
 
         <TextView
             android:id="@+id/plan_top_title"
@@ -34,10 +35,17 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:background="@mipmap/publish_w" />
+            android:background="@mipmap/publish_icon" />
     </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plan_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:text="添加计划" />
 </LinearLayout>

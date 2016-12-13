@@ -32,6 +32,8 @@
             android:name=".activity.SignUp"
             android:launchMode="singleTask" />
         <activity android:name=".activity.Main" />
+        <activity android:name=".activity.PlanCreate"
+            android:launchMode="singleTask"/>
         <activity android:name=".activity.Publish"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden"/>

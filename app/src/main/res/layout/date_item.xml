@@ -10,5 +10,5 @@
     android:gravity="center"
     android:textSize="20sp"
     android:text="12"
-    android:textColor="@color/colorTheme" />
+    android:textColor="#ffffff" />
 </RelativeLayout>

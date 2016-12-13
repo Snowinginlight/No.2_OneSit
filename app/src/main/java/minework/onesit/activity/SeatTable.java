@@ -3,6 +3,7 @@ package minework.onesit.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -149,6 +150,12 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.seat_back:
+                AnimationDrawable animBack = new AnimationDrawable();
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
+                animBack.setOneShot(true);
+                seatBack.setBackground(animBack);
+                animBack.start();
                 onBackPressed();
                 break;
             case R.id.seat_menu:
@@ -159,7 +166,7 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
                     if (seatMenuWindow == null) {
                         initSeatMenuWindow();
                     }
-                    seatMenuWindow.showAsDropDown(seatMenu, 0, 20);
+                    seatMenuWindow.showAsDropDown(seatMenu, 0, 26);
                     seatMenu.startAnimation(counter_clockAnimation);
                 }
                 break;
@@ -276,7 +283,6 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            onBackPressed();
                         }
                     });
                     AlertDialog saveDialog = saveView.create();

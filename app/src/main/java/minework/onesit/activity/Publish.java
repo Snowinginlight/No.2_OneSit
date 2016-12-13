@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
@@ -204,6 +205,12 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.publish_back_button:
+                AnimationDrawable animBack = new AnimationDrawable();
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
+                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
+                animBack.setOneShot(true);
+                publishBackButton.setBackground(animBack);
+                animBack.start();
                 onBackPressed();
                 break;
             case R.id.publish_manager_button:
@@ -215,7 +222,7 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                     if (managerWindow == null) {
                         initSeatMenuWindow();
                     }
-                    managerWindow.showAsDropDown(publishManagerButton, 0, 20);
+                    managerWindow.showAsDropDown(publishManagerButton, 0, 26);
                     publishManagerButton.startAnimation(counter_clockAnimation);
                 }
                 break;
@@ -243,7 +250,6 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            onBackPressed();
                         }
                     });
                     AlertDialog saveDialog = saveView.create();
@@ -262,6 +268,30 @@ public class Publish extends BaseActivity implements View.OnClickListener, Camer
                 }
                 break;
             case R.id.publish_finish:
+                if (!TextUtils.isEmpty(publishTitleEdit.getText()) && !TextUtils.isEmpty(publishStartTimeText.getText())
+                        &&!TextUtils.isEmpty(publishStopTimeText.getText())&&!TextUtils.isEmpty(publishPlaceEdit.getText())
+                        &&!TextUtils.isEmpty(publishPeopleNumberEdit.getText())) {
+                    AlertDialog.Builder saveView = new AlertDialog.Builder(this);
+                    saveView.setMessage("确定发布么？发布成功将收在“我的发布”中").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                MyRomateSQLUtil.savePublish(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),Html.toHtml(publishInformationEdit.getText(),Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL));
+                            } else {
+                                MyRomateSQLUtil.savePublish(publishTitleEdit.getText().toString(),seatTableAdapter.getList(),column,publishStartTimeText.getText().toString(),publishStopTimeText.getText().toString(),Integer.parseInt(publishPeopleNumberEdit.getText().toString()),publishPlaceEdit.getText().toString(),Html.toHtml(publishInformationEdit.getText()));
+                            }
+
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    AlertDialog saveDialog = saveView.create();
+                    saveDialog.show();
+                } else {
+                    Toast.makeText(mContext,"标题、时间、地点、人数均不能为空",Toast.LENGTH_SHORT).show();
+                }
                 if (managerWindow != null && managerWindow.isShowing()) {
                     managerWindow.dismiss();
                 }

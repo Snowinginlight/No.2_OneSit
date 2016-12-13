@@ -2,10 +2,20 @@
 <resources>
     <color name="colorPrimary">#008f07</color>
     <color name="colorPrimaryDark">#008f07</color>
-    <color name="colorAccent">#008f07</color>
+    <color name="colorAccent">#afd2a7</color>
+    <color name="background">#f2f4f7</color>
     <color name="colorTheme">#5e9a61</color>
     <color name="colorText">#5d9960</color>
     <color name="colorTextLight">#afd2a7</color>
     <color name="myBlue">#9bb7b0</color>
-    <color name="myGreen">#8b8d70</color>
+    <color name="myBrown">#8b8d70</color>
+    <color name="myGray">#9b9b9b</color>
+    <color name="myBlack">#4e544e</color>
+    <color name="myBlueText">#76967b</color>
+    <color name="plan1">#72b792</color>
+    <color name="plan2">#90b9a3</color>
+    <color name="plan3">#8bbf8f</color>
+    <color name="plan4">#aac391</color>
+    <color name="plan5">#a9ce92</color>
+    <color name="plan6">#afd2a7</color>
 </resources>

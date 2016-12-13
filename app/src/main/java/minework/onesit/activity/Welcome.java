@@ -28,6 +28,7 @@ public class Welcome extends BaseActivity {
         if (!isMaxLeapInit) {
             MLObject.registerSubclass(User.class);
             MLObject.registerSubclass(Plan.class);
+            MLObject.registerSubclass(PlanSelf.class);
             MLObject.registerSubclass(PublishModel.class);
             MLObject.registerSubclass(minework.onesit.module.Publish.class);
             MLObject.registerSubclass(Seat.class);

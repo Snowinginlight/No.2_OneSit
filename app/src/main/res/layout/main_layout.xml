@@ -14,55 +14,57 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@mipmap/buttom_bar"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:background="@mipmap/buttom_bar">
 
         <RelativeLayout
+            android:id="@+id/plan_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
             <RelativeLayout
                 android:id="@+id/plan_button"
-                android:layout_width="40dp"
-                android:layout_height="61dp"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
                 android:background="@mipmap/plan_w" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/find_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
             <RelativeLayout
                 android:id="@+id/find_button"
-                android:layout_width="40dp"
-                android:layout_height="58dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@mipmap/find_w" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/news_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
             <RelativeLayout
                 android:id="@+id/news_button"
-                android:layout_width="50dp"
-                android:layout_height="58dp"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
                 android:background="@mipmap/news_w" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/mine_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
             <RelativeLayout
                 android:id="@+id/mine_button"
-                android:layout_width="32dp"
-                android:layout_height="58dp"
+                android:layout_width="25dp"
+                android:layout_height="35dp"
                 android:background="@mipmap/mine_w" />
         </RelativeLayout>
     </LinearLayout>
