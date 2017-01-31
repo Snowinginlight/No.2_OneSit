@@ -1,12 +1,15 @@
 package minework.onesit.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import minework.onesit.R;
 import minework.onesit.fragment.find.FindFragment;
@@ -32,12 +35,15 @@ public class Main extends BaseActivity implements View.OnClickListener {
     private View findLayout;
     private View newsLayout;
     private View mineLayout;
+    private View planUnderline;
+    private View findUnderline;
+    private View newsUnderline;
+    private View mineUnderline;
     //按钮
     private View planButton;
     private View findButton;
     private View newsButton;
     private View mineButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +56,23 @@ public class Main extends BaseActivity implements View.OnClickListener {
     protected void init() {
         planLayout = findViewById(R.id.plan_layout);
         planButton = findViewById(R.id.plan_button);
+        planUnderline = findViewById(R.id.plan_underline);
         findLayout = findViewById(R.id.find_layout);
         findButton = findViewById(R.id.find_button);
+        findUnderline = findViewById(R.id.find_underline);
         newsLayout = findViewById(R.id.news_layout);
         newsButton = findViewById(R.id.news_button);
+        newsUnderline = findViewById(R.id.news_underline);
         mineLayout = findViewById(R.id.mine_layout);
         mineButton = findViewById(R.id.mine_button);
+        mineUnderline = findViewById(R.id.mine_underline);
 
         planLayout.setOnClickListener(this);
         findLayout.setOnClickListener(this);
         newsLayout.setOnClickListener(this);
         mineLayout.setOnClickListener(this);
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         setTabSelection(0);
     }
 
@@ -110,7 +120,8 @@ public class Main extends BaseActivity implements View.OnClickListener {
     }
 
     private void planLayoutTab(FragmentTransaction transaction) {
-        planButton.setBackgroundResource(R.mipmap.plan_g);
+        planButton.setBackgroundResource(R.mipmap.plan_green);
+        planUnderline.setVisibility(View.VISIBLE);
         if (planFragment == null) {
             planFragment = new PlanFragment();
             transaction.add(R.id.fragment_content, planFragment);
@@ -120,7 +131,8 @@ public class Main extends BaseActivity implements View.OnClickListener {
     }
 
     private void findLayoutTab(FragmentTransaction transaction) {
-        findButton.setBackgroundResource(R.mipmap.find_g);
+        findButton.setBackgroundResource(R.mipmap.find_green);
+        findUnderline.setVisibility(View.VISIBLE);
         if (findFragment == null) {
             findFragment = new FindFragment();
             transaction.add(R.id.fragment_content, findFragment);
@@ -130,7 +142,8 @@ public class Main extends BaseActivity implements View.OnClickListener {
     }
 
     private void newsLayoutTab(FragmentTransaction transaction) {
-        newsButton.setBackgroundResource(R.mipmap.news_g);
+        newsButton.setBackgroundResource(R.mipmap.news_green);
+        newsUnderline.setVisibility(View.VISIBLE);
         if (newsFragment == null) {
             newsFragment = new NewsFragment();
             transaction.add(R.id.fragment_content, newsFragment);
@@ -140,7 +153,8 @@ public class Main extends BaseActivity implements View.OnClickListener {
     }
 
     private void mineLayoutTab(FragmentTransaction transaction) {
-        mineButton.setBackgroundResource(R.mipmap.mine_g);
+        mineButton.setBackgroundResource(R.mipmap.mine_green);
+        mineUnderline.setVisibility(View.VISIBLE);
         if (mineFragment == null) {
             mineFragment = new MineFragment();
             transaction.add(R.id.fragment_content, mineFragment);
@@ -151,10 +165,14 @@ public class Main extends BaseActivity implements View.OnClickListener {
 
     private void clearSelection() {
 
-        planButton.setBackgroundResource(R.mipmap.plan_w);
-        findButton.setBackgroundResource(R.mipmap.find_w);
-        newsButton.setBackgroundResource(R.mipmap.news_w);
-        mineButton.setBackgroundResource(R.mipmap.mine_w);
+        planButton.setBackgroundResource(R.mipmap.plan_gray);
+        planUnderline.setVisibility(View.INVISIBLE);
+        findButton.setBackgroundResource(R.mipmap.find_gray);
+        findUnderline.setVisibility(View.INVISIBLE);
+        newsButton.setBackgroundResource(R.mipmap.news_gray);
+        newsUnderline.setVisibility(View.INVISIBLE);
+        mineButton.setBackgroundResource(R.mipmap.mine_gray);
+        mineUnderline.setVisibility(View.INVISIBLE);
 
     }
 
@@ -186,5 +204,19 @@ public class Main extends BaseActivity implements View.OnClickListener {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getBooleanExtra("updataUser", false)) {
+            setTabSelection(3);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

@@ -1,33 +1,29 @@
 package minework.onesit.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import minework.onesit.R;
-import minework.onesit.fragment.plan.DividerItemDecoration;
+import minework.onesit.fragment.plan.SeatNumberHAdapter;
+import minework.onesit.fragment.plan.SeatNumberVAdapter;
 import minework.onesit.fragment.plan.SeatTableAdapter;
 import minework.onesit.util.MyRomateSQLUtil;
 
@@ -36,25 +32,22 @@ import minework.onesit.util.MyRomateSQLUtil;
  */
 
 public class SeatTable extends BaseActivity implements View.OnClickListener {
-    private static int row = 1;
-    private static int column = 1;
-    private static boolean isItemDecoration = false;
-    private static RecyclerView mRecyclerView;
-    private static DividerItemDecoration decor = null;
-    private static List<Integer> mDatas;
-    private static SeatTableAdapter mAdapter;
-    private static TextView seatPosition;
-    private static EditText seatTableTitle;
-    private boolean isToastPreview = false;
+
+    //主体
+    private Context mContext;
+    private ScrollView seatMain;
+    private TextView seatTitle;
     private Button seatBack;
-    private Button seatMenu;
-    private Button seatAdd;
-    private Button seatMinus;
-    private Button seatGrid;
-    private Button seatScale;
+    private Button seatManager;
+    private View seatRowButton;
+    private View seatColumnButton;
+    private View seatAdd;
+    private View seatRemove;
     private TextView seatColumn;
     private TextView seatRow;
-    private Context mContext;
+    private RecyclerView seatTable;
+    private RecyclerView seatNumberV;
+    private RecyclerView seatNumberH;
     //菜单
     private PopupWindow seatMenuWindow;
     private View seatMenuView;
@@ -64,65 +57,43 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     private Animation clockAnimation;
     private Animation counter_clockAnimation;
 
-    public static void setSeatPosition(int position) {
-        if (position < column) {
-            seatPosition.setText(String.valueOf(1) + "," + String.valueOf(position + 1));
-        } else {
-            if ((position + 1) % column != 0) {
-                seatPosition.setText(String.valueOf(position / column + 1) + "," + String.valueOf((position + 1) % column));
-            } else {
-                seatPosition.setText(String.valueOf((position + 1) / column) + "," + String.valueOf(column));
-            }
-        }
-    }
-
-    public static SeatTableAdapter getRecyclerViewAdapter() {
-        return mAdapter;
-    }
-
-    public static void setRecyclerViewAdapter(SeatTableAdapter seatTableAdapter) {
-        mAdapter = seatTableAdapter;
-    }
-
-    public static DividerItemDecoration getRecyclerViewDecoration() {
-        return decor;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seat_table_layout);
-        mRecyclerView = (RecyclerView) findViewById(R.id.seat_view);
-        mRecyclerView.setDrawingCacheEnabled(true);
         mContext = MyApplication.getInstance();
         init();
-        initRecycleView();
     }
 
     @Override
     protected void init() {
+        seatMain = (ScrollView) findViewById(R.id.seat_main);
+        seatTitle = (TextView) findViewById(R.id.seat_title);
         seatBack = (Button) findViewById(R.id.seat_back);
-        seatMenu = (Button) findViewById(R.id.seat_menu);
-        seatAdd = (Button) findViewById(R.id.seat_add);
-        seatMinus = (Button) findViewById(R.id.seat_minus);
-        seatGrid = (Button) findViewById(R.id.seat_grid);
-        seatScale = (Button) findViewById(R.id.seat_scale);
+        seatManager = (Button) findViewById(R.id.seat_manager);
         seatRow = (TextView) findViewById(R.id.seat_row);
         seatColumn = (TextView) findViewById(R.id.seat_column);
-        seatPosition = (TextView) findViewById(R.id.seat_position);
-        seatTableTitle = (EditText) findViewById(R.id.seat_table_title);
+        seatRowButton = findViewById(R.id.seat_row_button);
+        seatColumnButton = findViewById(R.id.seat_column_button);
+        seatAdd = findViewById(R.id.seat_add);
+        seatRemove = findViewById(R.id.seat_remove);
+        seatTable = (RecyclerView) findViewById(R.id.seat_table);
+        seatNumberV = (RecyclerView) findViewById(R.id.seat_number_v);
+        seatNumberH = (RecyclerView) findViewById(R.id.seat_number_h);
+        seatTable.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+        seatTable.setAdapter(new SeatTableAdapter(Integer.valueOf(seatRow.getText().toString()), Integer.valueOf(seatColumn.getText().toString())));
+        seatNumberV.setLayoutManager(new LinearLayoutManager(mContext));
+        seatNumberV.setAdapter(new SeatNumberVAdapter(Integer.valueOf(seatRow.getText().toString())));
+        seatNumberH.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+        seatNumberH.setAdapter(new SeatNumberHAdapter(Integer.valueOf(seatColumn.getText().toString())));
 
-        seatRow.setText(String.valueOf(row));
-        seatColumn.setText(String.valueOf(column));
-
+        seatTitle.setOnClickListener(this);
         seatBack.setOnClickListener(this);
-        seatMenu.setOnClickListener(this);
+        seatManager.setOnClickListener(this);
+        seatRowButton.setOnClickListener(this);
+        seatColumnButton.setOnClickListener(this);
         seatAdd.setOnClickListener(this);
-        seatMinus.setOnClickListener(this);
-        seatGrid.setOnClickListener(this);
-        seatScale.setOnClickListener(this);
-        seatColumn.setOnClickListener(this);
-        seatRow.setOnClickListener(this);
+        seatRemove.setOnClickListener(this);
 
         clockAnimation = AnimationUtils.loadAnimation(this, R.anim.clockwise_rotate_90);
         clockAnimation.setDuration(500);
@@ -132,173 +103,103 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
         counter_clockAnimation.setFillAfter(true);
     }
 
-    protected void initRecycleView() {
-        initData(row * column);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, column));
-        mRecyclerView.setAdapter(mAdapter = new SeatTableAdapter(mDatas));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-
-    protected void initData(int totalNum) {
-        mDatas = new ArrayList<Integer>();
-        for (int i = 0; i < totalNum; i++) {
-            mDatas.add(R.drawable.seat_gray);
-        }
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.seat_title:
+                startActivity(new Intent(this, EditActivity.class).putExtra("name", "标题").putExtra("activity", "SeatTable"));
+                break;
             case R.id.seat_back:
-                AnimationDrawable animBack = new AnimationDrawable();
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
-                animBack.setOneShot(true);
-                seatBack.setBackground(animBack);
-                animBack.start();
                 onBackPressed();
                 break;
-            case R.id.seat_menu:
+            case R.id.seat_manager:
                 if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
+                    seatManager.startAnimation(clockAnimation);
+                    ObjectAnimator.ofFloat(seatMain, "alpha", 0.3f, 1.0f).setDuration(500).start();
                     seatMenuWindow.dismiss();
-                    seatMenu.startAnimation(clockAnimation);
                 } else {
                     if (seatMenuWindow == null) {
                         initSeatMenuWindow();
                     }
-                    seatMenuWindow.showAsDropDown(seatMenu, 0, 26);
-                    seatMenu.startAnimation(counter_clockAnimation);
+                    seatMenuWindow.showAsDropDown(seatManager, -68, -20);
+                    seatManager.startAnimation(counter_clockAnimation);
+                    ObjectAnimator.ofFloat(seatMain, "alpha", 1.0f, 0.3f).setDuration(500).start();
+                }
+                break;
+            case R.id.seat_finish:
+                int blackNumber = 0;
+                int greenNumber = 0;
+                for (Integer colorType : ((SeatTableAdapter) seatTable.getAdapter()).getList()) {
+                    switch (colorType){
+                        case 1:
+                            blackNumber++;
+                            break;
+                        case 2:
+                            greenNumber++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                startActivity(new Intent(this,Publish.class).putExtra("name","座位").putExtra("content",String.valueOf(greenNumber)).putExtra("content1",String.valueOf(greenNumber+blackNumber)).putExtra("row",Integer.valueOf(seatRow.getText().toString())).putExtra("column",Integer.valueOf(seatColumn.getText().toString())).putIntegerArrayListExtra("seat", (ArrayList<Integer>) ((SeatTableAdapter)seatTable.getAdapter()).getList()));
+                break;
+            case R.id.seat_import:
+                startActivity(new Intent(this, SeatTableModelList.class));
+                break;
+            case R.id.seat_save:
+                if (!TextUtils.isEmpty(seatTitle.getText())) {
+                    MyRomateSQLUtil.saveSeatTable(seatTitle.getText().toString(), ((SeatTableAdapter) seatTable.getAdapter()).getList(), Integer.valueOf(seatRow.getText().toString()), Integer.valueOf(seatColumn.getText().toString()));
                 }
                 break;
             case R.id.seat_add:
-                if (mAdapter.getItemCount() > 0) {
-                    mAdapter.addData(0);
-                }
-                if ((mAdapter.getItemCount() - 1) - (column * row) != 0) {
-                    seatRow.setText(String.valueOf(row));
-                } else {
-                    seatRow.setText(String.valueOf(row + 1));
-                    row++;
-                }
-                if (isItemDecoration) {
-                    mRecyclerView.removeItemDecoration(decor);
-                    mRecyclerView.addItemDecoration(decor);
+                ((SeatTableAdapter) seatTable.getAdapter()).addItem();
+                seatRow.setText(String.valueOf(seatTable.getAdapter().getItemCount() % Integer.valueOf(seatColumn.getText().toString()) == 0 ? seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString()) : (seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString())) + 1));
+                seatNumberV.setAdapter(new SeatNumberVAdapter(Integer.valueOf(seatRow.getText().toString())));
+                break;
+            case R.id.seat_remove:
+                if (seatTable.getAdapter().getItemCount() > 1) {
+                    ((SeatTableAdapter) seatTable.getAdapter()).removeItem();
+                    if (Integer.valueOf(seatRow.getText().toString()) == 1 && seatTable.getAdapter().getItemCount() > 0) {
+                        seatColumn.setText(String.valueOf(Integer.valueOf(seatColumn.getText().toString()) - 1));
+                        seatNumberH.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+                        seatNumberH.setAdapter(new SeatNumberHAdapter(Integer.valueOf(seatColumn.getText().toString())));
+                        seatTable.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+                        seatTable.setAdapter(new SeatTableAdapter(Integer.valueOf(seatRow.getText().toString()), Integer.valueOf(seatColumn.getText().toString())));
+                    }
+                    seatRow.setText(String.valueOf(seatTable.getAdapter().getItemCount() % Integer.valueOf(seatColumn.getText().toString()) == 0 ? seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString()) : seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString()) + 1));
+                    seatNumberV.setAdapter(new SeatNumberVAdapter(Integer.valueOf(seatRow.getText().toString())));
                 }
                 break;
-            case R.id.seat_minus:
-                if (mAdapter.getItemCount() > 1) {
-                    mAdapter.removeData(mAdapter.getItemCount() - 1);
-                }
-                if (mAdapter.getItemCount() - (column * (row - 1)) == 0) {
-                    seatRow.setText(String.valueOf(row - 1));
-                    row--;
-                } else {
-                    seatRow.setText(String.valueOf(row));
-                }
-                if (isItemDecoration) {
-                    mRecyclerView.removeItemDecoration(decor);
-                    mRecyclerView.addItemDecoration(decor);
-                }
-                break;
-            case R.id.seat_grid:
-                if (isItemDecoration == false && mAdapter.getItemCount() > 0) {
-                    decor = new DividerItemDecoration(this, column);
-                    mRecyclerView.addItemDecoration(decor);
-                    seatGrid.setBackgroundResource(R.drawable.grid_green);
-                    isItemDecoration = true;
-                } else {
-                    mRecyclerView.removeItemDecoration(decor);
-                    seatGrid.setBackgroundResource(R.drawable.grid_gray);
-                    isItemDecoration = false;
-                }
-                break;
-            case R.id.seat_scale:
-                if (mRecyclerView.getDrawingCache() != null) {
-                    mRecyclerView.destroyDrawingCache();
-                }
-                mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
-                AlertDialog.Builder scaleView = new AlertDialog.Builder(this);
-                ImageView imageView = new ImageView(this);
-                imageView.setImageBitmap(mRecyclerView.getDrawingCache());
-                scaleView.setView(imageView);
-                AlertDialog preview = scaleView.create();
-                preview.show();
-                break;
-            case R.id.seat_row:
+            case R.id.seat_row_button:
                 NumberPicker picker1 = new NumberPicker(this);
                 picker1.setOffset(1);//偏移量
                 picker1.setRange(1, 1000);//数字范围
-                picker1.setSelectedItem(row);
                 picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(String option) {
                         seatRow.setText(option);
-                        row = Integer.valueOf(option);
-                        initRecycleView();
-                        if (isItemDecoration) {
-                            mRecyclerView.removeItemDecoration(decor);
-                            mRecyclerView.addItemDecoration(decor);
-                        }
+                        seatTable.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+                        seatTable.setAdapter(new SeatTableAdapter(Integer.valueOf(seatRow.getText().toString()), Integer.valueOf(seatColumn.getText().toString())));
+                        seatNumberV.setAdapter(new SeatNumberVAdapter(Integer.valueOf(seatRow.getText().toString())));
                     }
                 });
                 picker1.show();
                 break;
-            case R.id.seat_column:
+            case R.id.seat_column_button:
                 NumberPicker picker2 = new NumberPicker(this);
                 picker2.setOffset(1);//偏移量
                 picker2.setRange(1, 1000);//数字范围
-                picker2.setSelectedItem(column);
                 picker2.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(String option) {
                         seatColumn.setText(option);
-                        column = Integer.valueOf(option);
-                        initRecycleView();
-                        if (isItemDecoration) {
-                            mRecyclerView.removeItemDecoration(decor);
-                            mRecyclerView.addItemDecoration(decor);
-                        }
+                        seatTable.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+                        seatTable.setAdapter(new SeatTableAdapter(Integer.valueOf(seatRow.getText().toString()), Integer.valueOf(seatColumn.getText().toString())));
+                        seatNumberH.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+                        seatNumberH.setAdapter(new SeatNumberHAdapter(Integer.valueOf(seatColumn.getText().toString())));
                     }
                 });
                 picker2.show();
-                break;
-            case R.id.seat_finish:
-                Intent intentFinish = new Intent(this, Publish.class);
-                intentFinish.putExtra("hasSeatTable", true);
-                intentFinish.putExtra("column", column);
-                intentFinish.putExtra("isItemDecoration", isItemDecoration);
-                startActivity(intentFinish);
-                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
-                    seatMenuWindow.dismiss();
-                }
-                break;
-            case R.id.seat_save:
-                if (!TextUtils.isEmpty(seatTableTitle.getText().toString())) {
-                    AlertDialog.Builder saveView = new AlertDialog.Builder(this);
-                    saveView.setMessage("确定上传到云端？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            MyRomateSQLUtil.saveSeatTable(seatTableTitle.getText().toString(), mDatas, row, column, isItemDecoration);
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    });
-                    AlertDialog saveDialog = saveView.create();
-                    saveDialog.show();
-                } else {
-                    Toast.makeText(mContext, "标题不能为空", Toast.LENGTH_SHORT).show();
-                }
-                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
-                    seatMenuWindow.dismiss();
-                }
-                break;
-            case R.id.seat_import:
-                startActivity(new Intent(this, SeatTableModelList.class));
-                if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
-                    seatMenuWindow.dismiss();
-                }
                 break;
             default:
                 return;
@@ -306,7 +207,7 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     }
 
     private void initSeatMenuWindow() {
-        seatMenuView = getLayoutInflater().inflate(R.layout.seat_menu_layout, null, false);
+        seatMenuView = getLayoutInflater().inflate(R.layout.seat_manager_layout, null, false);
         seatMenuWindow = new PopupWindow(seatMenuView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         seatMenuWindow.setAnimationStyle(R.style.AnimationFade);
         seatMenuWindow.setOutsideTouchable(true);
@@ -319,29 +220,37 @@ public class SeatTable extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (getIntent().getBooleanExtra("hasSeatTable", false)) {
-            SeatTable.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    column = getIntent().getIntExtra("column", 1);
-                    row = getIntent().getIntExtra("row", 1);
-                    seatColumn.setText(String.valueOf(column));
-                    seatRow.setText(String.valueOf(row));
-                    seatTableTitle.setText(getIntent().getStringExtra("title"));
-                    mRecyclerView.setLayoutManager(new GridLayoutManager(SeatTable.this, getIntent().getIntExtra("column", 1)));
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-            });
-        }
-    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(getIntent().getStringExtra("content"))) {
+            switch (getIntent().getStringExtra("name")) {
+                case "标题":
+                    seatTitle.setText(getIntent().getStringExtra("content"));
+                    break;
+                default:
+                    return;
+            }
+        }
+        if (getIntent().getBooleanExtra("hasSeatTable", false)) {
+            seatTitle.setText(getIntent().getStringExtra("title"));
+            seatColumn.setText(String.valueOf(getIntent().getIntExtra("column", 1)));
+            seatTable.setLayoutManager(new GridLayoutManager(mContext, Integer.valueOf(seatColumn.getText().toString())));
+            seatTable.setAdapter(new SeatTableAdapter(getIntent().getIntegerArrayListExtra("seat_table")));
+            seatRow.setText(String.valueOf(seatTable.getAdapter().getItemCount() % Integer.valueOf(seatColumn.getText().toString()) == 0 ? seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString()) : (seatTable.getAdapter().getItemCount() / Integer.valueOf(seatColumn.getText().toString())) + 1));
+        }
+        if (seatMenuWindow != null && seatMenuWindow.isShowing()) {
+            seatManager.startAnimation(clockAnimation);
+            ObjectAnimator.ofFloat(seatMain, "alpha", 0.3f, 1.0f).setDuration(500).start();
+            seatMenuWindow.dismiss();
+        }
+    }
+
 }
 
 

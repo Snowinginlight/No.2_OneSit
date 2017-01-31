@@ -9,6 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,11 +77,48 @@ public class CameraCore {
                     cursor.close();
                 }
             }
-            Log.d("Test",filePath);
+            Log.d("Test", filePath);
             return filePath;
         } catch (Exception e) {
             return contentUri.getPath();
         }
+    }
+
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final Paint paint = new Paint();
+        /* 去锯齿 */
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        // 保证是方形，并且从中心画
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int w;
+        int deltaX = 0;
+        int deltaY = 0;
+        if (width <= height) {
+            w = width;
+            deltaY = height - w;
+        } else {
+            w = height;
+            deltaX = width - w;
+        }
+        final Rect rect = new Rect(deltaX, deltaY, w, w);
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        // 圆形，所有只用一个
+        int radius = (int) (Math.sqrt(w * w * 2.0d) / 2);
+        canvas.drawRoundRect(rectF, radius, radius, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     //调用系统照相机，对Intent参数进行封装
@@ -98,7 +141,7 @@ public class CameraCore {
     //调用系统裁剪图片，对Intent参数进行封装
     protected Intent takeCropPicture(Uri photoURL, int with, int height) {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoURL,"image/*");
+        intent.setDataAndType(photoURL, "image/*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
@@ -191,20 +234,20 @@ public class CameraCore {
         outState.putParcelable("photoURL", photoURL);
     }
 
-    //回调实例
-    public interface CameraResult {
-        //成功回调
-        public void onSuccess(String filePath);
-
-        //失败
-        public void onFail(String message);
-    }
-
-    private void initTempURL(){
+    private void initTempURL() {
         temp = new File(externalStorageDirectory);
         if (!temp.exists()) {
             temp.mkdirs();
         }
-        tempFile = new File(externalStorageDirectory+"tempFile.jpg");
+        tempFile = new File(externalStorageDirectory + "tempFile.jpg");
+    }
+
+    //回调实例
+    public interface CameraResult {
+        //成功回调
+        void onSuccess(String filePath);
+
+        //失败
+        void onFail(String message);
     }
 }

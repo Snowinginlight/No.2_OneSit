@@ -9,54 +9,70 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import minework.onesit.R;
 import minework.onesit.activity.MyApplication;
-import minework.onesit.activity.SeatTable;
 
-public class SeatTableAdapter extends RecyclerView.Adapter<SeatTableAdapter.MyViewHolder> {
+public class SeatTableAdapter extends RecyclerView.Adapter<SeatTableAdapter.SeatHolder> {
 
-    private static List<Integer> mDatas;
+    private List<Integer> mDatas;
+
+    public SeatTableAdapter(int row, int column) {
+        super();
+        getList(row * column);
+    }
 
     public SeatTableAdapter(List<Integer> mDatas) {
         super();
         this.mDatas = mDatas;
     }
 
-    public List<Integer> getList(){
+    public List<Integer> getList(int size) {
+        mDatas = new ArrayList<Integer>();
+        for (int i = 0; i < size; i++)
+            mDatas.add(1);
         return mDatas;
     }
-    public void changeData(int position,int newColor){
-        mDatas.set(position,newColor);
-        notifyItemChanged(position);
-    }
 
-    public void addData(int position) {
-        mDatas.add(position);
-        notifyItemInserted(position);
-    }
-
-    public void removeData(int position) {
-        if (mDatas.size() > 0) {
-            mDatas.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+    public SeatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        SeatHolder holder = new SeatHolder(LayoutInflater.from(
                 MyApplication.getInstance()).inflate(R.layout.seat_item, parent,
                 false));
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.seatItem.setImageResource(mDatas.get(position));
+    public void onBindViewHolder(SeatHolder holder, int position) {
+        switch (mDatas.get(position)) {
+            case 1:
+                holder.seatItem.setImageResource(R.mipmap.seat_b);
+                break;
+            case 0:
+                holder.seatItem.setImageResource(0);
+                break;
+            case 2:
+                holder.seatItem.setImageResource(R.mipmap.seat_g);
+                break;
+        }
+    }
+
+    public List<Integer> getList() {
+        return mDatas;
+    }
+
+    public void addItem() {
+        mDatas.add(1);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem() {
+        mDatas.remove(mDatas.size() - 1);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -64,35 +80,49 @@ public class SeatTableAdapter extends RecyclerView.Adapter<SeatTableAdapter.MyVi
         return mDatas.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class SeatHolder extends RecyclerView.ViewHolder {
 
-        private static final int NOCOLOR = 0;
-        private static final int GRAY = R.drawable.seat_gray;
-        private static final int GREEN = R.drawable.seat_green;
         private ImageView seatItem;
-        private int isVisible = 0;
 
-        public MyViewHolder(View view) {
+        public SeatHolder(View view) {
             super(view);
             seatItem = (ImageView) view.findViewById(R.id.seat_item);
             seatItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isVisible != GRAY) {
-                        SeatTable.getRecyclerViewAdapter().changeData(getAdapterPosition(),GRAY);
-                        isVisible = GRAY;
-                    } else {
-                        SeatTable.getRecyclerViewAdapter().changeData(getAdapterPosition(),NOCOLOR);
-                        isVisible = NOCOLOR;
+                    switch (mDatas.get(getAdapterPosition())) {
+                        case 1:
+                            seatItem.setImageResource(0);
+                            mDatas.set(getAdapterPosition(), 0);
+                            break;
+                        case 0:
+                            seatItem.setImageResource(R.mipmap.seat_b);
+                            mDatas.set(getAdapterPosition(),1);
+                            break;
+                        case 2:
+                            seatItem.setImageResource(0);
+                            mDatas.set(getAdapterPosition(), 0);
+                            break;
+                        default:
+                            return;
                     }
-                    SeatTable.setSeatPosition(getAdapterPosition());
                 }
             });
             seatItem.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    SeatTable.getRecyclerViewAdapter().changeData(getAdapterPosition(),GREEN);
-                    SeatTable.setSeatPosition(getAdapterPosition());
+                    switch (mDatas.get(getAdapterPosition())) {
+                        case 1:
+                            seatItem.setImageResource(R.mipmap.seat_g);
+                            mDatas.set(getAdapterPosition(),2);
+                            break;
+                        case 2:
+                            seatItem.setImageResource(R.mipmap.seat_b);
+                            mDatas.set(getAdapterPosition(),1);
+                            break;
+                        default:
+                            return true;
+                    }
                     return true;
                 }
             });

@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:divider="@drawable/divide_v"
-    android:orientation="horizontal"
-    android:showDividers="beginning|end">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="90dp"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divide_h"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/triangle_2"/>
+    <LinearLayout
+        android:layout_width="70dp"
+        android:layout_height="90dp"
         android:orientation="vertical"
-        android:showDividers="beginning|middle|end">
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle_1">
 
         <Button
-            android:id="@+id/publish_edit_seat"
+            android:id="@+id/publish_seat"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="#ffffff"
+            android:layout_height="30dp"
+            android:background="@color/noColor"
             android:gravity="center"
             android:text="编辑座位"
-            android:textColor="@color/colorText"
-            android:textSize="20dp" />
-
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:orientation="vertical"
+            android:background="@color/myGray"
+            android:alpha="0.5"/>
         <Button
-            android:id="@+id/publish_import_model"
+            android:id="@+id/publish_import"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="#ffffff"
+            android:layout_height="30dp"
+            android:background="@color/noColor"
             android:gravity="center"
             android:text="云端导入"
-            android:textColor="@color/colorText"
-            android:textSize="20dp" />
-
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:orientation="vertical"
+            android:background="@color/myGray"
+            android:alpha="0.5"/>
         <Button
-            android:id="@+id/publish_save_model"
+            android:id="@+id/publish_save"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="#ffffff"
+            android:layout_height="30dp"
+            android:background="@color/noColor"
             android:gravity="center"
             android:text="存至云端"
-            android:textColor="@color/colorText"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/publish_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="#ffffff"
-            android:gravity="center"
-            android:text="发布信息"
-            android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp" />
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

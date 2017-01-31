@@ -21,6 +21,7 @@ import minework.onesit.fragment.plan.ModelListAdapter;
 import minework.onesit.fragment.plan.SeatTableAdapter;
 import minework.onesit.module.PublishModel;
 import minework.onesit.util.MyRomateSQLUtil;
+import minework.onesit.util.MyUtil;
 
 /**
  * Created by 无知 on 2016/12/9.
@@ -65,13 +66,15 @@ public class PublishModelList extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
-                    SeatTable.setRecyclerViewAdapter(new SeatTableAdapter(seatDatas));
                     Intent intentFinish = new Intent(PublishModelList.this, minework.onesit.activity.Publish.class);
                     intentFinish.putExtra("hasPublishModel", true);
                     intentFinish.putExtra("publish_title", publishModelList.get((int) message.obj).getPublish_Model_title());
                     intentFinish.putExtra("start_time", publishModelList.get((int) message.obj).getStart_time());
                     intentFinish.putExtra("stop_time", publishModelList.get((int) message.obj).getStop_time());
                     intentFinish.putExtra("seat_column", publishModelList.get((int) message.obj).getSeat_column());
+                    intentFinish.putExtra("seat_row", publishModelList.get((int) message.obj).getSeat_row());
+                    intentFinish.putExtra("pictures", MyUtil.listToString(publishModelList.get((int) message.obj).getPictures()));
+                    intentFinish.putIntegerArrayListExtra("seat_table", (ArrayList<Integer>) seatDatas);
                     intentFinish.putExtra("people_number", publishModelList.get((int) message.obj).getPeople_number());
                     intentFinish.putExtra("publish_place", publishModelList.get((int) message.obj).getPublish_Model_place());
                     intentFinish.putExtra("information_text", publishModelList.get((int) message.obj).getInformation_text());
@@ -82,10 +85,6 @@ public class PublishModelList extends BaseActivity {
             return true;
         }
     });
-
-    public static PublishModel getPublishList(int position) {
-        return publishModelList.get(position);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,16 +98,10 @@ public class PublishModelList extends BaseActivity {
     protected void init() {
         MyRomateSQLUtil.getPublishModelList(mHandler);
         publishModelRecycler = (RecyclerView) findViewById(R.id.publish_model_list);
-        publishModelBack = (Button) findViewById(R.id.publish_model_back);
+        publishModelBack = (Button) findViewById(R.id.publish_model_list_back);
         publishModelBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnimationDrawable animBack = new AnimationDrawable();
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
-                animBack.setOneShot(true);
-                publishModelBack.setBackground(animBack);
-                animBack.start();
                 onBackPressed();
             }
         });

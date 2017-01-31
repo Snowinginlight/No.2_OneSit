@@ -2,205 +2,325 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:orientation="vertical">
     //顶栏
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/top_bar">
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
 
         <Button
             android:id="@+id/plan_create_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:background="@mipmap/back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="新建计划"
+            android:text="@string/add_plan"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/plan_create_sure"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@mipmap/sure" />
     </RelativeLayout>
     //正文
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="1dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+                //标题
+
+                <RelativeLayout
+                    android:id="@+id/plan_create_title_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/title"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/plan_create_title_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/physics"
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //起始时间
+
+                <RelativeLayout
+                    android:id="@+id/plan_create_start_time_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="108dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/start_time"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/plan_create_start_time_text"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="28dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:text="@string/time_context"
+                        android:maxLines="2"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //终止时间
+
+                <RelativeLayout
+                    android:id="@+id/plan_create_stop_time_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="108dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/stop_time"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/plan_create_stop_time_text"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="28dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:text="@string/time_context"
+                        android:maxLines="2"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //提醒时间
+
+                <RelativeLayout
+                    android:id="@+id/plan_create_remind_time_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="108dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/remind_time"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/plan_create_remind_time_text"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="28dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:text="@string/time_context"
+                        android:maxLines="2"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //地点
+
+                <RelativeLayout
+                    android:id="@+id/plan_create_place_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/place_"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/plan_create_place_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/school"
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //备注
+                <RelativeLayout
+                    android:id="@+id/plan_create_tips_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/tips"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/plan_create_tips_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="25dp"
+                        android:maxWidth="170dp"
+                        android:text="@string/tips_context"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/plan_create_finish"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@mipmap/frame"
-        android:divider="@mipmap/divider_horizontal"
-        android:orientation="vertical"
-        android:showDividers="middle">
-        //标题
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="标题:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/plan_create_title"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#00000000"
-                android:paddingRight="15dp"
-                android:singleLine="true"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //起始时间
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="起始时间:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/plan_create_start_time"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //终止时间
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="终止时间:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/plan_create_stop_time"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //提醒时间
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="提醒时间:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/plan_create_remind_time"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //地点
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="地点:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/plan_create_place"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#00000000"
-                android:paddingRight="15dp"
-                android:singleLine="true"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //座位
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="座位:"
-                android:textColor="@color/myGray"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/plan_create_seat"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#00000000"
-                android:paddingRight="15dp"
-                android:singleLine="true"
-                android:textColor="@color/myBlack"
-                android:textSize="18sp" />
-        </LinearLayout>
-        //备注
-        <EditText
-            android:id="@+id/plan_create_tips"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="完 成"
             android:textSize="20sp"
-            android:textColor="@color/myBlack"
-            android:hint="备注"
-            android:padding="12dp"
-            android:background="#00000000"/>
-    </LinearLayout>
+            android:textColor="@color/colorPrimary"/>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

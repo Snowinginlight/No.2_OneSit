@@ -29,8 +29,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
             switch (message.what) {
                 case 0:
                     if ((boolean) message.obj) {
-                        SignUp.this.finish();
                         startActivity(new Intent(SignUp.this, Main.class));
+                        SignUp.this.finish();
                     }
                     break;
                 default:
@@ -49,11 +49,11 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
     }
 
     protected void init() {
-        signUpSignUp = (Button) findViewById(R.id.sign_up_signup);
-        idSignUp = (EditText) findViewById(R.id.id_signup);
-        passwordSignUp = (EditText) findViewById(R.id.password_signup);
-        confirmSignUp = (EditText) findViewById(R.id.confirm_signup);
-        emailSignUp = (EditText) findViewById(R.id.email_signup);
+        signUpSignUp = (Button) findViewById(R.id.sign_up_finish);
+        idSignUp = (EditText) findViewById(R.id.sign_up_id);
+        passwordSignUp = (EditText) findViewById(R.id.sign_up_password);
+        confirmSignUp = (EditText) findViewById(R.id.sign_up_confirm);
+        emailSignUp = (EditText) findViewById(R.id.sign_up_email);
 
         signUpSignUp.setOnClickListener(this);
     }
@@ -61,7 +61,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sign_up_signup:
+            case R.id.sign_up_finish:
                 MyRomateSQLUtil.signUp(idSignUp.getText().toString(), passwordSignUp.getText().toString(), confirmSignUp.getText().toString(), emailSignUp.getText().toString(), mHandler);
                 break;
             default:
@@ -69,4 +69,10 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,Login.class));
+        SignUp.this.finish();
+    }
 }

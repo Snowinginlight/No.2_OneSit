@@ -1,353 +1,484 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/publish_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical">
+    //顶栏
 
     <RelativeLayout
-        android:id="@+id/publish_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/top_bar">
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
 
         <Button
-            android:id="@+id/publish_back_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/publish_back"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:background="@mipmap/back" />
 
-        <TextView
-            android:id="@+id/plan_top_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="发布"
-            android:textColor="#ffffff"
-            android:textSize="30sp" />
-
         <Button
-            android:id="@+id/publish_manager_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/publish_manager"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:background="@mipmap/manager" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/publish_manager"
+            android:layout_centerHorizontal="true"
+            android:text="@string/publish_activity"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
+
     </RelativeLayout>
+    //正文
 
     <ScrollView
-        android:id="@+id/publish_scroll"
+        android:id="@+id/publish_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@mipmap/frame"
-            android:divider="@mipmap/divider_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="5dp"
-            android:showDividers="middle">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/publish_title"
-                android:layout_width="match_parent"
+            <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="1dp">
+                //标题
 
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="标题:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
-
-                <EditText
-                    android:id="@+id/publish_title_edit"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
-            </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/publish_start_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                    <RelativeLayout
+                        android:id="@+id/publish_title_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp">
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="起始时间:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/title"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/publish_start_time_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/publish_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="30dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
 
-            <LinearLayout
-                android:id="@+id/publish_stop_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="终止时间:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //起始时间
 
-                <TextView
-                    android:id="@+id/publish_stop_time_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
-            </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/publish_start_time_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="4dp">
 
-            <LinearLayout
-                android:id="@+id/publish_people_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                        <TextView
+                            android:layout_width="108dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/start_time"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="人数上限:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35dp" />
+                        <TextView
+                            android:id="@+id/publish_start_time"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="28dp"
+                            android:gravity="end"
+                            android:maxLines="2"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/publish_people_number_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:inputType="number"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //终止时间
 
-            <LinearLayout
-                android:id="@+id/publish_place"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                    <RelativeLayout
+                        android:id="@+id/publish_stop_time_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="4dp">
 
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="地点:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
+                        <TextView
+                            android:layout_width="108dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/stop_time"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
 
-                <EditText
-                    android:id="@+id/publish_place_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/publish_stop_time"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="28dp"
+                            android:gravity="end"
+                            android:maxLines="2"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
 
-            <LinearLayout
-                android:id="@+id/publish_seat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
 
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="座位:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //人数
 
-                <Button
-                    android:id="@+id/publish_seat_button"
-                    android:layout_width="105dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="140dp"
-                    android:background="@drawable/simple_button_normal" />
-            </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/publish_people_number_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp">
 
-            <RelativeLayout
-                android:id="@+id/publish_seat_table_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                        <TextView
+                            android:layout_width="108dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/people"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/publish_seat_table_toast"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:gravity="center"
-                    android:text="+添加座位图"
-                    android:textColor="#c7c7c7"
-                    android:textSize="30sp" />
-                <HorizontalScrollView
-                    android:id="@+id/publish_seat_scroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scrollbars="none"
-                    android:visibility="gone">
+                        <TextView
+                            android:id="@+id/publish_people_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="30dp"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/publish_seat_table"
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //地点
+
+                    <RelativeLayout
+                        android:id="@+id/publish_place_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/place_"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/publish_place"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="30dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //座位
+
+                    <RelativeLayout
+                        android:id="@+id/publish_seat_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/seat"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="30dp"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/publish_seat_l"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="0"
+                                android:textColor="@color/myRed"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/publish_seat_m"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="/"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/publish_seat_r"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="1"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //详情
+
+                    <RelativeLayout
+                        android:id="@+id/publish_more_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="3dp" />
-                </HorizontalScrollView>
-            </RelativeLayout>
+                        android:layout_marginTop="4dp">
 
-            <LinearLayout
-                android:id="@+id/publish_information"
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/more"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/publish_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="25dp"
+                            android:maxWidth="170dp"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
+
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.3"
+                        android:background="@color/myGray" />
+                    //图片
+
+                    <RelativeLayout
+                        android:id="@+id/publish_pictures_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="@string/picture"
+                            android:textColor="@color/myBlack"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="35dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/publish_pictures_1"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@color/myGray" />
+
+                            <ImageView
+                                android:id="@+id/publish_pictures_2"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@color/myGray" />
+
+                            <ImageView
+                                android:id="@+id/publish_pictures_3"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:background="@color/myGray" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:background="@mipmap/back"
+                            android:backgroundTint="@color/myGray"
+                            android:rotation="180" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/publish_finish"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@mipmap/divider_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
 
                 <TextView
-                    android:layout_width="90dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="详情:"
-                    android:textColor="@color/colorText"
-                    android:textSize="35sp" />
-
-                <Button
-                    android:id="@+id/publish_information_button"
-                    android:layout_width="105dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="140dp"
-                    android:background="@drawable/simple_button_normal" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@drawable/divide_h"
-                android:orientation="vertical"
-                android:showDividers="middle|end">
-
-                <EditText
-                    android:id="@+id/publish_information_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:minHeight="150dp"
-                    android:minLines="8"
-                    android:hint="可用图文描述信息"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp"
-                    android:visibility="gone"/>
-
-            </LinearLayout>
+                    android:text="完 成"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -2,327 +2,317 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical">
 
+    //顶栏
+
     <RelativeLayout
-        android:id="@+id/plan_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/top_bar">
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
 
         <Button
             android:id="@+id/seat_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:background="@mipmap/back" />
 
         <TextView
-            android:id="@+id/seat_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="自定义"
+            android:text="@string/myseat"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
 
         <Button
-            android:id="@+id/seat_menu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/seat_manager"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@mipmap/menu" />
+            android:layout_marginRight="20dp"
+            android:background="@mipmap/manager" />
+
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/seat_table_main"
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="1dp">
+        <ScrollView
+            android:id="@+id/seat_main"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
             <LinearLayout
-                android:id="@+id/publish_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="20dp">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+                //标题
 
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp"
-                    android:text="名称:"
-                    android:textColor="@color/colorText"
-                    android:textSize="25sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/title"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/seat_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/school"
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:rotation="180"
+                        android:background="@mipmap/back"
+                        android:backgroundTint="@color/myGray"/>
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //座位图
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:minHeight="300dp"
+                    android:layout_marginTop="4dp">
 
-                    <EditText
-                        android:id="@+id/seat_table_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="18dp"
-                        android:background="#00000000"
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
                         android:gravity="center"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="13dp"
-                        android:textColor="@color/colorText"
-                        android:textSize="20sp" />
-
+                        android:text="@string/seat"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/divider_thin" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <HorizontalScrollView
-                    android:id="@+id/scroll_seat_table"
-                    android:layout_width="300dp"
-                    android:layout_height="380dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/seat_frame"
-                    android:scrollbars="none">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/seat_view"
-                            android:layout_width="match_parent"
+                            android:id="@+id/seat_number_v"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="fill"
-                            android:padding="3dp" />
-                </HorizontalScrollView>
-
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/seat_frame"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/seat_gray" />
-
-                        <TextView
-                            android:layout_width="40dp"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:text="空闲"
-                            android:textSize="18sp" />
+                            android:layout_marginLeft="-1dp"
+                            android:layout_marginTop="12dp"/>
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:scrollbars="none">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/seat_number_h"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="-3dp"
+                                    android:layout_marginLeft="-4dp"/>
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/seat_table"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="-4dp"/>
+                            </LinearLayout>
+                        </HorizontalScrollView>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //图例
 
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/seat_green" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="@string/legend"
+                        android:textColor="@color/myBlack"
+                        android:textSize="18sp" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="130dp"
+                        android:src="@mipmap/seat_g"/>
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="90dp"
+                        android:text="@string/prebook"
+                        android:textSize="15sp"
+                        android:textColor="@color/myBlackLight"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:src="@mipmap/seat_b"/>
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/empty"
+                        android:textSize="15sp"
+                        android:textColor="@color/myBlackLight"/>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/myGray"
+                    android:alpha="0.3"/>
+                //操作栏
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/seat_row_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/seat_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="1"
+                            android:textSize="15sp"
+                            android:textColor="@color/colorPrimary"/>
 
                         <TextView
-                            android:layout_width="40dp"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:text="已订"
-                            android:textSize="18sp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="行数"
+                            android:textColor="@color/myBlack" />
                     </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/seat_position"
-                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:text="1,1"
-                        android:textColor="@color/colorText"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:id="@+id/seat_column_button"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="当前" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/seat_column"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="1"
+                            android:textSize="15sp"
+                            android:textColor="@color/colorPrimary"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/seat_row"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textColor="@color/colorText"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="行数" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/seat_column"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textColor="@color/colorText"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="列数" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <Button
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="列数"
+                            android:textColor="@color/myBlack" />
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/seat_add"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/add" />
-
-                    <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="添加" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:src="@mipmap/add"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/seat_minus"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/minus" />
-
-                    <TextView
-                        android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="添加"
+                            android:textColor="@color/myBlack" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/seat_remove"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="移除" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:src="@mipmap/remove"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/seat_grid"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/grid_gray" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="网格" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/seat_scale"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/scale_green" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:text="预览" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="移除"
+                            android:textColor="@color/myBlack" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

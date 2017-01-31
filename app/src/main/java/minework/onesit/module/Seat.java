@@ -6,6 +6,7 @@ import com.maxleap.MLObject;
 import org.json.JSONArray;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 无知 on 2016/11/11.
@@ -60,14 +61,6 @@ public class Seat extends MLObject {
 
     public void setSeat_column(int seat_column) {
         put("seat_column", seat_column);
-    }
-    //分割线
-    public boolean getSeat_divider() {
-        return getBoolean("seat_divider");
-    }
-
-    public void setSeat_divider(Boolean seat_divider) {
-        put("seat_divider", seat_divider);
     }
 
 }

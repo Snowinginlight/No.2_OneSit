@@ -3,6 +3,9 @@ package minework.onesit.module;
 import com.maxleap.MLClassName;
 import com.maxleap.MLObject;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,9 +45,8 @@ public class Publish extends MLObject {
     }
 
     public void setStart_time(String start_time) {
-        put("start_time", start_time);
+        put("start_time",start_time);
     }
-
     //终止时间
     public String getStop_time() {
         return getString("stop_time");
@@ -88,10 +90,10 @@ public class Publish extends MLObject {
         return getJSONArray("join_list");
     }
 
-    public void setJoin_list(String user_id,String position) {
+    public void setJoin_list(String object_id,String position) {
         JSONObject mDatas = new JSONObject();
         try {
-            mDatas.put("user_id",user_id);
+            mDatas.put("object_id",object_id);
             mDatas.put("user_position",position);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -108,7 +110,14 @@ public class Publish extends MLObject {
     public void setSeat_column(int seat_column) {
         put("seat_column", seat_column);
     }
+    //行
+    public int getSeat_row() {
+        return getInt("seat_row");
+    }
 
+    public void setSeat_row(int seat_row) {
+        put("seat_row", seat_row);
+    }
     //详情
     public String getInformation_text() {
         return getString("information_text");
@@ -116,5 +125,13 @@ public class Publish extends MLObject {
 
     public void setInformation_text(String information_text) {
         put("information_text", information_text);
+    }
+
+    //图片
+    public List<String> getPictures(){
+        return getList("pictures");
+    }
+    public void setPictures(List<String> pictures){
+        put("pictures", pictures);
     }
 }

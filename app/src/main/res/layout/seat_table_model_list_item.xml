@@ -5,21 +5,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
+        android:paddingLeft="10dp"
         android:orientation="horizontal"
         android:background="#ffffff">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="60dp"
-            android:src="@drawable/file" />
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/file" />
         <TextView
             android:id="@+id/seat_table_model_list_item_name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:paddingLeft="20dp"
             android:gravity="center_vertical"
-            android:textSize="25sp"
-            android:textColor="@color/colorText"/>
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import minework.onesit.R;
+import minework.onesit.database.MyDatabaseUtil;
 import minework.onesit.util.MyRomateSQLUtil;
 
 /**
@@ -31,6 +32,10 @@ public class Login extends BaseActivity implements View.OnClickListener {
                 case 0:
                     if ((boolean)message.obj) {
                         Login.this.finish();
+                        MyDatabaseUtil.deleteMarket();
+                        MyDatabaseUtil.deleteCare();
+                        MyRomateSQLUtil.getMarketList();
+                        MyRomateSQLUtil.getCareList();
                         startActivity(new Intent(Login.this, Main.class));
                     }
                     break;
@@ -50,10 +55,10 @@ public class Login extends BaseActivity implements View.OnClickListener {
     }
 
     protected void init() {
-        idLogin = (EditText) findViewById(R.id.id_login);
-        passwordLogin = (EditText) findViewById(R.id.password_login);
-        signUpLogin = (Button) findViewById(R.id.sign_up_login);
-        logInLogin = (Button) findViewById(R.id.log_in_login);
+        idLogin = (EditText) findViewById(R.id.login_id);
+        passwordLogin = (EditText) findViewById(R.id.login_password);
+        signUpLogin = (Button) findViewById(R.id.login_sign_up);
+        logInLogin = (Button) findViewById(R.id.login_log_in);
 
         signUpLogin.setOnClickListener(this);
         logInLogin.setOnClickListener(this);
@@ -62,11 +67,12 @@ public class Login extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.log_in_login:
+            case R.id.login_log_in:
                 MyRomateSQLUtil.clickLogin(idLogin.getText().toString(), passwordLogin.getText().toString(),mHandler);
                 break;
-            case R.id.sign_up_login:
+            case R.id.login_sign_up:
                 startActivity(new Intent(this, SignUp.class));
+                Login.this.finish();
                 break;
         }
     }

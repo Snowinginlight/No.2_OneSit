@@ -1,44 +1,50 @@
 package minework.onesit.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.TimePicker;
 import minework.onesit.R;
-import minework.onesit.fragment.plan.PlanFragment;
-import minework.onesit.util.MyRomateSQLUtil;
+import minework.onesit.database.MyDatabaseUtil;
 
 /**
  * Created by 无知 on 2016/12/13.
  */
 
 public class PlanCreate extends BaseActivity implements View.OnClickListener {
-    private static int planNumber = 1;
-    private static Handler mHandler;
+
+    private static Handler handler;
+    private int planSelfNum = 0;
     private Context mContext;
     private Button planCreateBackButton;
-    private Button planCreateSureButton;
-    private EditText planCreateTitle;
+    private CardView planCreateFinishButton;
+    private View planCreateTitleButton;
+    private TextView planCreateTitle;
+    private View planCreateStartTimeButton;
     private TextView planCreateStartTime;
+    private View planCreateStopTimeButton;
     private TextView planCreateStopTime;
+    private View planCreateRemindTimeButton;
     private TextView planCreateRemindTime;
-    private EditText planCreatePlace;
-    private EditText planCreateSeat;
-    private EditText planCreateTips;
+    private View planCreatePlaceButton;
+    private TextView planCreatePlace;
+    private View planCreateTipsButton;
+    private TextView planCreateTips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,64 +57,54 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
     @Override
     protected void init() {
         planCreateBackButton = (Button) findViewById(R.id.plan_create_back);
-        planCreateSureButton = (Button) findViewById(R.id.plan_create_sure);
-        planCreateTitle = (EditText) findViewById(R.id.plan_create_title);
-        planCreateStartTime = (TextView) findViewById(R.id.plan_create_start_time);
-        planCreateStopTime = (TextView) findViewById(R.id.plan_create_stop_time);
-        planCreateRemindTime = (TextView) findViewById(R.id.plan_create_remind_time);
-        planCreatePlace = (EditText) findViewById(R.id.plan_create_place);
-        planCreateSeat = (EditText) findViewById(R.id.plan_create_seat);
-        planCreateTips = (EditText) findViewById(R.id.plan_create_tips);
+        planCreateFinishButton = (CardView) findViewById(R.id.plan_create_finish);
+        planCreateTitleButton = findViewById(R.id.plan_create_title_button);
+        planCreateTitle = (TextView) findViewById(R.id.plan_create_title_text);
+        planCreateStartTimeButton = findViewById(R.id.plan_create_start_time_button);
+        planCreateStartTime = (TextView) findViewById(R.id.plan_create_start_time_text);
+        planCreateStopTimeButton = findViewById(R.id.plan_create_stop_time_button);
+        planCreateStopTime = (TextView) findViewById(R.id.plan_create_stop_time_text);
+        planCreateRemindTimeButton = findViewById(R.id.plan_create_remind_time_button);
+        planCreateRemindTime = (TextView) findViewById(R.id.plan_create_remind_time_text);
+        planCreatePlaceButton = findViewById(R.id.plan_create_place_button);
+        planCreatePlace = (TextView) findViewById(R.id.plan_create_place_text);
+        planCreateTipsButton = findViewById(R.id.plan_create_tips_button);
+        planCreateTips = (TextView) findViewById(R.id.plan_create_tips_text);
+
         planCreateBackButton.setOnClickListener(this);
-        planCreateSureButton.setOnClickListener(this);
-        planCreateStartTime.setOnClickListener(this);
-        planCreateStopTime.setOnClickListener(this);
-        planCreateRemindTime.setOnClickListener(this);
+        planCreateFinishButton.setOnClickListener(this);
+        planCreateTitleButton.setOnClickListener(this);
+        planCreateStartTimeButton.setOnClickListener(this);
+        planCreateStopTimeButton.setOnClickListener(this);
+        planCreateRemindTimeButton.setOnClickListener(this);
+        planCreatePlaceButton.setOnClickListener(this);
+        planCreateTipsButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.plan_create_back:
-                AnimationDrawable animBack = new AnimationDrawable();
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c), 200);
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back), 200);
-                animBack.setOneShot(true);
-                planCreateBackButton.setBackground(animBack);
-                animBack.start();
                 onBackPressed();
                 break;
-            case R.id.plan_create_sure:
-                SharedPreferences plan = mContext.getSharedPreferences("local_plan_" + planNumber,
-                        Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = plan.edit();
-                editor.putString("plan_title", planCreateTitle.getText().toString());
-                editor.putString("start_time", planCreateStartTime.getText().toString());
-                editor.putString("stop_time", planCreateStopTime.getText().toString());
-                editor.putString("remind_time", planCreateRemindTime.getText().toString());
-                editor.putString("plan_place", planCreatePlace.getText().toString());
-                editor.putString("plan_seat", planCreateSeat.getText().toString());
-                editor.putString("plan_tips", planCreateTips.getText().toString());
-                editor.commit();
-                PlanFragment.setPlanNumber(planNumber);
-                planNumber++;
-                AnimationDrawable animSure = new AnimationDrawable();
-                animSure.addFrame(mContext.getDrawable(R.mipmap.sure_c), 200);
-                animSure.addFrame(mContext.getDrawable(R.mipmap.sure), 200);
-                animSure.setOneShot(true);
-                planCreateSureButton.setBackground(animSure);
-                animSure.start();
+            case R.id.plan_create_finish:
                 if (!TextUtils.isEmpty(planCreateTitle.getText()) && !TextUtils.isEmpty(planCreateStartTime.getText())
                         && !TextUtils.isEmpty(planCreateStopTime.getText()) && !TextUtils.isEmpty(planCreateRemindTime.getText())) {
                     AlertDialog.Builder saveView = new AlertDialog.Builder(this);
                     saveView.setMessage("确定添加到计划表？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            MyRomateSQLUtil.savePlanSelf(planCreateTitle.getText().toString(), planCreateStartTime.getText().toString(), planCreateStopTime.getText().toString(), planCreateRemindTime.getText().toString(), planCreatePlace.getText().toString(), planCreateSeat.getText().toString(), planCreateTips.getText().toString());
-                            Message msg = new Message();
-                            msg.what = 1;
-                            msg.obj = true;
-                            mHandler.sendMessage(msg);
+                            Map<String, String> plan = new HashMap<String, String>();
+                            plan.put("plan_id", String.valueOf(planSelfNum));
+                            plan.put("plan_title", planCreateTitle.getText().toString());
+                            plan.put("start_time", planCreateStartTime.getText().toString());
+                            plan.put("stop_time", planCreateStopTime.getText().toString());
+                            plan.put("remind_time", planCreateRemindTime.getText().toString());
+                            plan.put("plan_place", planCreatePlace.getText().toString());
+                            plan.put("plan_tips", planCreateTips.getText().toString());
+                            MyDatabaseUtil.insertPlanSelf(plan);
+                            startActivity(new Intent(mContext,Main.class));
+                            finish();
                         }
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -120,8 +116,9 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                 } else {
                     Toast.makeText(mContext, "标题、时间不能为空", Toast.LENGTH_SHORT).show();
                 }
+
                 break;
-            case R.id.plan_create_start_time:
+            case R.id.plan_create_start_time_button:
                 DatePicker startTimePicker = new DatePicker(this);
                 startTimePicker.setRange(2016, 2060);//年份范围
                 startTimePicker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
@@ -136,7 +133,7 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
                             @Override
                             public void onTimePicked(String hour, String minute) {
-                                planCreateStartTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + "：" + minute);
+                                planCreateStartTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + ":" + minute);
                             }
                         });
                         picker.show();
@@ -144,7 +141,7 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                 });
                 startTimePicker.show();
                 break;
-            case R.id.plan_create_stop_time:
+            case R.id.plan_create_stop_time_button:
                 DatePicker stopTimePicker = new DatePicker(this);
                 stopTimePicker.setRange(2016, 2060);//年份范围
                 stopTimePicker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
@@ -159,7 +156,7 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
                             @Override
                             public void onTimePicked(String hour, String minute) {
-                                planCreateStopTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + "：" + minute);
+                                planCreateStopTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + ":" + minute);
                             }
                         });
                         picker.show();
@@ -167,7 +164,7 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                 });
                 stopTimePicker.show();
                 break;
-            case R.id.plan_create_remind_time:
+            case R.id.plan_create_remind_time_button:
                 DatePicker remindTimePicker = new DatePicker(this);
                 remindTimePicker.setRange(2016, 2060);//年份范围
                 remindTimePicker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
@@ -182,7 +179,7 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
                             @Override
                             public void onTimePicked(String hour, String minute) {
-                                planCreateRemindTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + "：" + minute);
+                                planCreateRemindTime.setText(myYear + "年" + myMonth + "月" + myDay + "日" + hour + ":" + minute);
                             }
                         });
                         picker.show();
@@ -190,12 +187,43 @@ public class PlanCreate extends BaseActivity implements View.OnClickListener {
                 });
                 remindTimePicker.show();
                 break;
+            case R.id.plan_create_title_button:
+                startActivity(new Intent(this, EditActivity.class).putExtra("name", "标题").putExtra("activity","PlanCreate"));
+                break;
+            case R.id.plan_create_place_button:
+                startActivity(new Intent(this, EditActivity.class).putExtra("name", "地点").putExtra("activity","PlanCreate"));
+                break;
+            case R.id.plan_create_tips_button:
+                startActivity(new Intent(this, EditActivity.class).putExtra("name", "备注").putExtra("activity","PlanCreate"));
+                break;
             default:
                 return;
         }
     }
 
-    public static void setHandler(Handler otherHandler){
-        mHandler = otherHandler;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        planSelfNum = getIntent().getIntExtra("planSelfNum", 0);
+        if (!TextUtils.isEmpty(getIntent().getStringExtra("content"))) {
+            switch (getIntent().getStringExtra("name")) {
+                case "标题":
+                    planCreateTitle.setText(getIntent().getStringExtra("content"));
+                    break;
+                case "地点":
+                    planCreatePlace.setText(getIntent().getStringExtra("content"));
+                    break;
+                case "备注":
+                    planCreateTips.setText(getIntent().getStringExtra("content"));
+                default:
+                    return;
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -66,23 +67,19 @@ public class SeatTableModelList extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
-                    SeatTable.setRecyclerViewAdapter(new SeatTableAdapter(seatDatas));
-                    Intent intentFinish = new Intent(SeatTableModelList.this, SeatTable.class);
-                    intentFinish.putExtra("hasSeatTable", true);
-                    intentFinish.putExtra("title", seatList.get((int) message.obj).getSeat_title());
-                    intentFinish.putExtra("column", seatList.get((int) message.obj).getSeat_column());
-                    intentFinish.putExtra("row", seatList.get((int) message.obj).getSeat_row());
-                    startActivity(intentFinish);
+                    Intent intent = new Intent(SeatTableModelList.this, SeatTable.class);
+                    intent.putExtra("hasSeatTable",true);
+                    intent.putExtra("title", seatList.get((int) message.obj).getSeat_title());
+                    intent.putExtra("column", seatList.get((int) message.obj).getSeat_column());
+                    intent.putExtra("row", seatList.get((int) message.obj).getSeat_row());
+                    intent.putIntegerArrayListExtra("seat_table", (ArrayList<Integer>) seatDatas);
+                    startActivity(intent);
                 default:
                     return true;
             }
             return true;
         }
     });
-
-    public static Seat getSeatList(int position) {
-        return seatList.get(position);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,16 +93,10 @@ public class SeatTableModelList extends BaseActivity {
     protected void init() {
         MyRomateSQLUtil.getSeatTableList(mHandler);
         seatTableList = (RecyclerView) findViewById(R.id.seat_table_model_list);
-        seatTableBack = (Button) findViewById(R.id.seat_table_model_back);
+        seatTableBack = (Button) findViewById(R.id.seat_model_list_back);
         seatTableBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnimationDrawable animBack = new AnimationDrawable();
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back_c),200);
-                animBack.addFrame(mContext.getDrawable(R.mipmap.back),200);
-                animBack.setOneShot(true);
-                seatTableBack.setBackground(animBack);
-                animBack.start();
                 onBackPressed();
             }
         });

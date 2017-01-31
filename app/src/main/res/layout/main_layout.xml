@@ -12,60 +12,127 @@
         android:layout_weight="1">
     </FrameLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@mipmap/buttom_bar">
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardElevation="2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <RelativeLayout
-            android:id="@+id/plan_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-            <RelativeLayout
-                android:id="@+id/plan_button"
-                android:layout_width="30dp"
-                android:layout_height="35dp"
-                android:background="@mipmap/plan_w" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/find_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-            <RelativeLayout
-                android:id="@+id/find_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@mipmap/find_w" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/news_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-            <RelativeLayout
-                android:id="@+id/news_button"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
-                android:background="@mipmap/news_w" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/mine_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-            <RelativeLayout
-                android:id="@+id/mine_button"
-                android:layout_width="25dp"
-                android:layout_height="35dp"
-                android:background="@mipmap/mine_w" />
-        </RelativeLayout>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/plan_layout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/plan_button"
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:background="@mipmap/plan_gray" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/plan_underline"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:background="@color/colorPrimary"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/find_layout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/find_button"
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:background="@mipmap/find_gray" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/find_underline"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:background="@color/colorPrimary"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/news_layout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/news_button"
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:background="@mipmap/news_gray" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/news_underline"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:background="@color/colorPrimary"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mine_layout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/mine_button"
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:background="@mipmap/mine_gray" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mine_underline"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:background="@color/colorPrimary"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>
