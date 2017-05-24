@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.Map;
 
 import minework.onesit.R;
+import minework.onesit.activity.ActivityManagerList;
 import minework.onesit.activity.Login;
 import minework.onesit.activity.MyApplication;
 import minework.onesit.activity.User;
@@ -117,10 +118,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 animator2.setDuration(300);
                 animator2.start();
                 break;
-            case R.id.mine_activity:
+            case R.id.mine_activity://活动管理
                 ObjectAnimator animator3 = ObjectAnimator.ofFloat(mineActivity, "alpha", 1f, 0.5f, 1f);
                 animator3.setDuration(300);
                 animator3.start();
+                startActivity(new Intent(mContext,ActivityManagerList.class));
                 break;
             case R.id.mine_collect:
                 ObjectAnimator animator4 = ObjectAnimator.ofFloat(mineCollect, "alpha", 1f, 0.5f, 1f);

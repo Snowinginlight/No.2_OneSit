@@ -188,19 +188,18 @@ public class MyDatabaseUtil {
         db.delete("News", null, null);
     }
 
-    public static void insertPlan(Plan plan) {
-        if (!queryExist(plan.getObjectId(), "Plan")) {
-            ContentValues values = new ContentValues();
-            values.put("object_id", plan.getObjectId());
-            values.put("plan_title", plan.getPlan_title());
-            values.put("start_time", plan.getStart_time());
-            values.put("stop_time", plan.getStop_time());
-            values.put("plan_place", plan.getPlan_place());
-            values.put("seat_table", MyUtil.jsonArrayToString(plan.getSeat_table()));
-            values.put("plan_tips", plan.getPlan_tips());
-            db.insert("Plan", null, values);
-            values.clear();
-        }
+    public static void insertPlan(Map<String, String> plan)  {
+        ContentValues values = new ContentValues();
+        values.put("plan_id", plan.get("plan_id"));
+        values.put("plan_title", plan.get("plan_title"));
+        values.put("start_time", plan.get("start_time"));
+        values.put("stop_time", plan.get("stop_time"));
+        values.put("remind_time", plan.get("remind_time"));
+        values.put("plan_place", plan.get("plan_place"));
+        values.put("plan_seat", plan.get("plan_seat"));
+        values.put("plan_tips", plan.get("plan_tips"));
+        db.insert("Plan", null, values);
+        values.clear();
     }
 
     public static Map<String, String> queryPlan(String object_id) {

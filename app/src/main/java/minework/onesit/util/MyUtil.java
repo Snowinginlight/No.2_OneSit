@@ -1,13 +1,16 @@
 package minework.onesit.util;
 
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +54,20 @@ public class MyUtil {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        return mDatas;
+    }
+    public static ArrayList<String> jsonArrayToJoinList(JSONArray jsonArray){
+        ArrayList<String> mDatas = new ArrayList<>();
+        for(int i = 0;i<jsonArray.length();i++) {
+            String s = null;
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                s = jsonObject.getString("user_name")+","+jsonObject.getString("user_position");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mDatas.add(s);
         }
         return mDatas;
     }

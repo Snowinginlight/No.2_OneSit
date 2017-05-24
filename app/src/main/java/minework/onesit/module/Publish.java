@@ -90,15 +90,20 @@ public class Publish extends MLObject {
         return getJSONArray("join_list");
     }
 
-    public void setJoin_list(String object_id,String position) {
+    public void setJoin_list(String user_name,String position) {
         JSONObject mDatas = new JSONObject();
         try {
-            mDatas.put("object_id",object_id);
+            mDatas.put("user_name",user_name);
             mDatas.put("user_position",position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONArray join_list = new JSONArray();
+        JSONArray join_list;
+        if(getJSONArray("join_list")==null){
+            join_list = new JSONArray();
+        }else{
+            join_list = getJSONArray("join_list");
+        }
         join_list.put(mDatas);
         put("join_list",join_list);
     }

@@ -43,6 +43,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".activity.PublishModelList"
             android:launchMode="singleTask"/>
+        <activity android:name=".activity.ActivityManagerList"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.JoinList"
+            android:launchMode="singleTask"/>
         <activity android:name=".activity.SeatTable"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.SeatTableModelList"

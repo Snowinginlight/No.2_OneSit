@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import minework.onesit.activity.Main;
@@ -183,11 +185,11 @@ public class MyRomateSQLUtil {
         MLQuery<PublishModel> query = MLQuery.getQuery("OneSit_PublishModel");
         query.whereEqualTo("user_id", MyDatabaseUtil.queryUserExist().get("user_id"));
         MLQueryManager.findAllInBackground(query, new FindCallback<PublishModel>() {
-            public void done(List<PublishModel> publishModelModelList, MLException e) {
+            public void done(List<PublishModel> publishModelList, MLException e) {
                 if (e == null) {
                     Message message = new Message();
                     message.what = 0;
-                    message.obj = publishModelModelList;
+                    message.obj = publishModelList;
                     handler.sendMessage(message);
                 } else {
                     Message message = new Message();
@@ -197,6 +199,7 @@ public class MyRomateSQLUtil {
             }
         });
     }
+
 
     public static void savePublish(String title, List<Integer> mDatas, int row, int column, String start_time, String stop_time, int people_number, String plan_place, String information_text, List<String> pictures) {
         Publish publish = new Publish();
@@ -268,6 +271,25 @@ public class MyRomateSQLUtil {
                 }
             });
         }
+    }
+
+    public static void getUserPublishList(final Handler handler) {
+        MLQuery<Publish> query = MLQuery.getQuery("OneSit_Publish");
+        query.whereEqualTo("user_id", MyDatabaseUtil.queryUserExist().get("user_id"));
+        MLQueryManager.findAllInBackground(query, new FindCallback<Publish>() {
+            public void done(List<Publish> publishList, MLException e) {
+                if (e == null) {
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = publishList;
+                    handler.sendMessage(message);
+                } else {
+                    Message message = new Message();
+                    message.what = -1;
+                    handler.sendMessage(message);
+                }
+            }
+        });
     }
 
     public static void getPublish(String object_id, final Handler handler) {
@@ -351,14 +373,23 @@ public class MyRomateSQLUtil {
         String objId = object_id;
         MLQueryManager.getInBackground(query, objId, new GetCallback<Publish>() {
             @Override
-            public void done(Publish publish, MLException e) {
+            public void done(final Publish publish, MLException e) {
                 if (e == null) {
                     publish.setSeat_table(seat);
-                    publish.setJoin_list(MyDatabaseUtil.queryUserExist().get("object_id"), position);
+                    publish.setJoin_list(MyDatabaseUtil.queryUserExist().get("user_name"), position);
                     MLDataManager.saveInBackground(publish, new SaveCallback() {
                         @Override
                         public void done(MLException e) {
                             Toast.makeText(mContext, "选择成功！", Toast.LENGTH_SHORT).show();
+                            Map<String, String> plan = new HashMap<String, String>();
+                            //plan.put("plan_id", String.valueOf(planSelfNum));
+                            plan.put("plan_title", publish.getPublish_title());
+                            plan.put("start_time", publish.getStart_time());
+                            plan.put("stop_time", publish.getStop_time());
+                            plan.put("remind_time", publish.getStart_time());
+                            plan.put("plan_place", publish.getPublish_place());
+                            plan.put("plan_tips", publish.getInformation_text());
+                            MyDatabaseUtil.insertPlanSelf(plan);
                             mContext.startActivity(new Intent(mContext, Main.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     });
@@ -375,6 +406,20 @@ public class MyRomateSQLUtil {
             public void done(User user, MLException e) {
                 if (e == null) {
                     MyDatabaseUtil.insertUser(user, bitmapUrlToFilePath(user.getUser_image()), "false");
+                } else {
+                    Log.d("Test", e.getMessage());
+                }
+            }
+        });
+    }
+    public static void getUserName(final String object_id) {
+        MLQuery<User> query = MLQuery.getQuery("OneSit_User");
+        query.whereEqualTo("object_id", object_id);
+        MLQueryManager.getFirstInBackground(query, new GetCallback<User>() {
+            @Override
+            public void done(User user, MLException e) {
+                if (e == null) {
+
                 } else {
                     Log.d("Test", e.getMessage());
                 }
